@@ -1,9 +1,10 @@
 package com.sky.enumeration;
 
+import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.Getter;
 
 @Getter
-public enum OrderStatus {
+public enum OrderStatus implements IEnum<Integer> {
 
     PENDING_PAYMENT(1, "待付款"),
     PENDING_CONFIRM(2, "待接单"),
@@ -19,6 +20,11 @@ public enum OrderStatus {
     OrderStatus(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
+    }
+
+    @Override
+    public Integer getValue() {
+        return this.code;
     }
 
     public static OrderStatus fromCode(Integer code) {
