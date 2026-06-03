@@ -42,6 +42,7 @@ public class AddressBook implements Serializable {
 
     //性别 0 女 1 男
     @Pattern(regexp = "[0-1]", message = "性别不合法")
+    @Builder.Default
     private String sex = "1";
 
     //省级区划编号
@@ -77,6 +78,7 @@ public class AddressBook implements Serializable {
 
     //是否默认 0否 1是
     @Range(max = 1L, message = "isDefault不合法")
+    @Builder.Default
     private Integer isDefault = 0;
 
     public String detailedAddress() {

@@ -26,7 +26,11 @@
         <lombok.version>1.18.46</lombok.version>
         <aliyun.sdk.oss>3.18.5</aliyun.sdk.oss>
         <fastjson.version>2.0.54</fastjson.version>
-        <knife4j.version>3.0.2</knife4j.version>
+        <knife4j.version>4.5.0</knife4j.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <pagehelper.version>2.1.0</pagehelper.version>
+        <spring-statemachine.version>4.0.1</spring-statemachine.version>
+        <poi.version>5.5.1</poi.version>
     </properties>
 
     <dependencyManagement>
@@ -59,8 +63,44 @@
 
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-core</artifactId>
+                <version>${spring-statemachine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

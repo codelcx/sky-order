@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+    <resultMap id="DishVOMap" type="com.sky.vo.DishVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="category_name" property="categoryName"/>
+        <collection property="flavors" ofType="com.sky.entity.DishFlavor" autoMapping="true">
+            <id column="dish_flavor_id" property="id"/>
+            <result column="dish_flavor_name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getDishVoList" resultMap="DishVOMap">
+        select d.id,
+               d.name,
+               d.category_id,
+               d.price,
+               d.image,
+               d.description,
+               d.status,
+               d.update_time,
+               c.name as category_name,
+               df.id as dish_flavor_id,
+               df.dish_id,
+               df.name as dish_flavor_name,
+               df.value
+        from dish d
+                 join category c on d.category_id = c.id
+                 left join dish_flavor df on d.id = df.dish_id
+        <where>
+            <if test="name != null and name != ''">
+                and d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and d.status = #{status}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
+    <select id="getSellingDishListByIds" resultType="java.lang.Long">
+        select
+            id
+        from dish
+        where status = 1
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteByIds">
+        delete
+        from dish
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getDishVOById" resultMap="DishVOMap">
+        select d.id,
+               d.name,
+               d.category_id,
+               d.price,
+               d.image,
+               d.description,
+               d.status,
+               d.update_time,
+               c.name as category_name,
+               df.id as dish_flavor_id,
+               df.dish_id,
+               df.name as dish_flavor_name,
+               df.value
+        from dish d
+                 join category c on d.category_id = c.id
+                 left join dish_flavor df on d.id = df.dish_id
+        where d.id = #{id}
+    </select>
+
+
+    <update id="updateDish">
+        update dish
+        <set>
+            update_time = #{updateTime},
+            update_user = #{updateUser},
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getDishImagesByIds" resultType="java.lang.String">
+        select image
+        from dish
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getDishVoListByCategoryId" resultMap="DishVOMap">
+        select d.id,
+               d.name,
+               d.category_id,
+               d.price,
+               d.image,
+               d.description,
+               d.status,
+               d.update_time,
+               c.name as category_name,
+               df.id as dish_flavor_id,
+               df.dish_id,
+               df.name as dish_flavor_name,
+               df.value
+        from dish d
+                 join category c on d.category_id = c.id
+                 left join dish_flavor df on d.id = df.dish_id
+        where d.category_id = #{categoryId} and d.status = 1
+        order by d.create_time
+    </select>
+
+    <select id="getAllStatusDishesCount" resultType="com.sky.vo.DishOverViewVO">
+        select
+            (select count(1) from dish where status = 1) as sold,
+            (select count(1) from dish where status = 0) as discontinued
+    </select>
+</mapper>

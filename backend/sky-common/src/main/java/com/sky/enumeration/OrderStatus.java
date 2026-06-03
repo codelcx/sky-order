@@ -1,39 +1,34 @@
 package com.sky.enumeration;
 
-import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.Getter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
-public enum OrderStatus implements IEnum<Integer> {
+public enum OrderStatus {
+    PENDING_PAYMENT(1),  // 待付款
+    TO_BE_CONFIRMED(2),  // 待接单
+    CONFIRMED(3),  // 已接单
+    DELIVERY_IN_PROGRESS(4),  // 派送中
+    COMPLETED(5),  // 已完成
+    CANCELLED(6); // 已取消
 
-    PENDING_PAYMENT(1, "待付款"),
-    PENDING_CONFIRM(2, "待接单"),
-    CONFIRMED(3, "已接单"),
-    DELIVERING(4, "派送中"),
-    COMPLETED(5, "已完成"),
-    CANCELLED(6, "已取消"),
-    REFUND(7, "退款");
+    private static final Map<Integer, OrderStatus> STATE_MAP = new HashMap<>();
 
-    private final Integer code;
-    private final String desc;
-
-    OrderStatus(Integer code, String desc) {
-        this.code = code;
-        this.desc = desc;
-    }
-
-    @Override
-    public Integer getValue() {
-        return this.code;
-    }
-
-    public static OrderStatus fromCode(Integer code) {
-        for (OrderStatus status : values()) {
-            if (status.code.equals(code)) {
-                return status;
-            }
+    static {
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            STATE_MAP.put(orderStatus.getState(), orderStatus);
         }
-        throw new IllegalArgumentException("未知订单状态: " + code);
     }
 
+    private final Integer state;
+
+    OrderStatus(Integer state) {
+        this.state = state;
+    }
+
+    public static OrderStatus fromState(Integer state) {
+        return STATE_MAP.get(state);
+    }
 }

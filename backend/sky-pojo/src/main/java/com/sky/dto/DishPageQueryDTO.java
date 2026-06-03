@@ -1,31 +1,30 @@
 package com.sky.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
-@ApiModel("菜品分页查询模版")
+@Schema(description = "菜品分页查询模版")
 public class DishPageQueryDTO implements Serializable {
 
-    @ApiModelProperty("页码")
+    @Schema(description = "页码")
     private int page = 1;
 
-    @ApiModelProperty("每页数量")
+    @Schema(description = "每页数量")
     private int pageSize = 10;
 
-    @ApiModelProperty("查询菜品名称")
+    @Schema(description = "查询菜品名称")
     private String name;
 
     //分类id
-    @ApiModelProperty("分类ID")
+    @Schema(description = "分类ID")
     private Integer categoryId;
 
     //状态 0表示禁用 1表示启用
-    @ApiModelProperty(value = "菜品状态（0:禁用 1:启用）", allowableValues = "0,1")
+    @Schema(description = "菜品状态（0:禁用 1:启用）", allowableValues = "0,1")
     @Range(max = 1L, message = "菜品状态不合法")
     private Integer status;
 

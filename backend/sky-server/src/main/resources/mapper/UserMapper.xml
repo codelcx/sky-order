@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.UserMapper">
+
+
+    <select id="getUserStatistics" resultType="com.sky.service.impl.ReportServiceImpl$UserDate">
+        WITH RECURSIVE date_range AS (
+            SELECT DATE(#{begin}) AS dt
+            UNION ALL
+            SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+            FROM date_range
+            WHERE dt &lt; DATE(#{end})
+        )
+        SELECT
+            dr.dt AS date,
+            (
+                select
+                    count(1)
+                from user u
+                where DATE(u.create_time) = dr.dt
+            ) AS daily_new_users,
+            (
+                SELECT COUNT(1)
+                FROM user u
+                WHERE DATE(u.create_time) &lt;= dr.dt
+            ) AS cumulative_users
+        FROM date_range dr
+        ORDER BY dr.dt;
+    </select>
+</mapper>

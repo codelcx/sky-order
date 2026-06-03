@@ -1,22 +1,21 @@
 package com.sky.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
-@ApiModel("购物车操作")
+@Schema(description = "购物车操作")
 public class ShoppingCartDTO implements Serializable {
 
-    @ApiModelProperty("菜品ID")
+    @Schema(description = "菜品ID")
     private Long dishId;
 
-    @ApiModelProperty("套餐ID")
+    @Schema(description = "套餐ID")
     private Long setmealId;
 
-    @ApiModelProperty("口味")
+    @Schema(description = "口味")
     private String dishFlavor;
 
 }

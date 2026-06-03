@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.OrderMapper">
+
+
+    <update id="update">
+        update orders
+        <set>
+            <if test="cancelReason != null">
+                cancel_reason=#{cancelReason},
+            </if>
+            <if test="rejectionReason != null">
+                rejection_reason=#{rejectionReason},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time=#{cancelTime},
+            </if>
+            <if test="payStatus != null">
+                pay_status=#{payStatus},
+            </if>
+            <if test="payMethod != null">
+                pay_method=#{payMethod},
+            </if>
+            <if test="checkoutTime != null">
+                checkout_time=#{checkoutTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <resultMap id="OrderVOMap" type="com.sky.vo.OrderVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="order_number" property="number"/>
+        <result column="real_amount" property="amount"/>
+        <collection property="orderDetailList" column="" ofType="com.sky.entity.OrderDetail" autoMapping="true">
+            <id column="order_detail_id" property="id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getHistoryOrders" resultMap="OrderVOMap">
+        select o.id,
+               o.number as order_number,
+               o.status,
+               o.user_id,
+               o.address_book_id,
+               o.order_time,
+               o.checkout_time,
+               o.pay_method,
+               o.pay_status,
+               o.amount as real_amount,
+               o.remark,
+               o.phone,
+               o.address,
+               o.user_name,
+               o.consignee,
+               o.cancel_reason,
+               o.rejection_reason,
+               o.cancel_time,
+               o.estimated_delivery_time,
+               o.delivery_status,
+               o.delivery_time,
+               o.pack_amount,
+               o.tableware_number,
+               o.tableware_status,
+               od.id as order_detail_id,
+               od.name,
+               od.image,
+               od.order_id,
+               od.dish_id,
+               od.setmeal_id,
+               od.dish_flavor,
+               od.number,
+               od.amount
+        from orders o
+                 join order_detail od on o.id = od.order_id
+        <where>
+            <if test="userId != null">and o.user_id = #{userId}</if>
+            <if test="status != null">and o.status = #{status}</if>
+            <if test="number != null">and o.number = #{number}</if>
+            <if test="phone != null">and o.phone = #{phone}</if>
+            <if test="beginTime != null">and o.order_time &gt;= #{beginTime}</if>
+            <if test="endTime != null">and o.order_time &lt;= #{endTime}</if>
+        </where>
+        order by o.order_time desc
+    </select>
+
+    <update id="updateOrderBatch">
+        <foreach collection="orders" item="order" separator=";">
+            update orders
+            <set>
+                <if test="order.cancelReason != null">
+                    cancel_reason=#{order.cancelReason},
+                </if>
+                <if test="order.rejectionReason != null">
+                    rejection_reason=#{order.rejectionReason},
+                </if>
+                <if test="order.cancelTime != null">
+                    cancel_time=#{order.cancelTime},
+                </if>
+                <if test="order.payStatus != null">
+                    pay_status=#{order.payStatus},
+                </if>
+                <if test="order.payMethod != null">
+                    pay_method=#{order.payMethod},
+                </if>
+                <if test="order.checkoutTime != null">
+                    checkout_time=#{order.checkoutTime},
+                </if>
+                <if test="order.status != null">
+                    status = #{order.status},
+                </if>
+                <if test="order.deliveryTime != null">
+                    delivery_time = #{order.deliveryTime}
+                </if>
+            </set>
+            where id = #{order.id}
+        </foreach>
+    </update>
+
+
+    <select id="getTurnoverList" resultType="com.sky.service.impl.ReportServiceImpl$TurnoverDate">
+        WITH RECURSIVE date_range AS (
+            SELECT DATE(#{begin}) AS dt
+            UNION ALL
+            SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+            FROM date_range
+            WHERE dt &lt; #{end}
+        )
+        SELECT
+            dr.dt AS date,
+            COALESCE(SUM(o.amount), 0) AS total_amount
+        FROM date_range dr
+            LEFT JOIN orders o ON DATE(o.checkout_time) = dr.dt and o.status = 5
+        GROUP BY dr.dt
+        ORDER BY dr.dt;
+    </select>
+
+    <select id="getOrdersStatistics" resultType="com.sky.service.impl.ReportServiceImpl$OrderDate">
+        WITH RECURSIVE date_range AS (
+            SELECT DATE(#{begin}) AS dt
+            UNION ALL
+            SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+            FROM date_range
+            WHERE dt &lt; #{end}
+        )
+        SELECT
+            dr.dt AS date,
+            (
+                select
+                count(1)
+                from orders o
+                where DATE(o.order_time) = dr.dt
+            ) AS daily_new_orders,
+            (
+                select
+                count(1)
+                from orders o
+                where DATE(o.order_time) = dr.dt and o.status = 5
+            ) AS daily_effective_new_orders
+        FROM date_range dr
+        ORDER BY dr.dt;
+    </select>
+
+    <select id="getSaleDishTop10" resultType="com.sky.service.impl.ReportServiceImpl$SalesTop10">
+        select
+            d.name,
+            sum(od.number) as count
+        from orders o
+        join order_detail od on o.id = od.order_id
+        join dish d on od.dish_id = d.id
+        where DATE(o.order_time) &gt;= #{begin} and DATE(o.order_time) &lt; #{end} and o.status = 5
+        group by d.id, d.name
+        order by count desc limit 10
+    </select>
+
+    <select id="getSaleSetMealTop10" resultType="com.sky.service.impl.ReportServiceImpl$SalesTop10">
+        select
+            s.name,
+            sum(od.number) as count
+        from orders o
+        join order_detail od on o.id = od.order_id
+        join setmeal s on od.setmeal_id = s.id
+        where DATE(o.order_time) &gt;= #{begin} and DATE(o.order_time) &lt; #{end} and o.status = 5 and od.setmeal_id is not null
+        group by s.id, s.name
+        order by count desc limit 10
+    </select>
+
+    <select id="getAllStatusOrderCount" resultType="com.sky.vo.OrderOverViewVO">
+        select
+            (select count(1) from orders where status = 2 and DATE(order_time) = CURRENT_DATE) as waiting_orders,
+            (select count(1) from orders where status = 3 and DATE(order_time) = CURRENT_DATE) as delivered_orders,
+            (select count(1) from orders where status = 5 and DATE(order_time) = CURRENT_DATE) as completed_orders,
+            (select count(1) from orders where status = 6 and DATE(order_time) = CURRENT_DATE) as cancelled_orders,
+            (select count(1) from orders where DATE(order_time) = CURRENT_DATE) as all_orders;
+    </select>
+
+    <sql id="orderDateCondition">
+        <if test="begin == null or end == null">
+            DATE(checkout_time) = CURRENT_DATE
+        </if>
+        <if test="begin != null and end != null">
+            DATE(checkout_time) &gt;= #{begin} and DATE(checkout_time) &lt;= #{end}
+        </if>
+    </sql>
+
+    <sql id="userDateCondition">
+        <if test="begin == null or end == null">
+            DATE(create_time) = CURRENT_DATE
+        </if>
+        <if test="begin != null and end != null">
+            DATE(create_time) &gt;= #{begin} and DATE(create_time) &lt;= #{end}
+        </if>
+    </sql>
+
+    <select id="getBusinessData" resultType="com.sky.vo.BusinessDataVO">
+        select
+            round(o.turnover, 2) as turnover,
+            o.valid_order_count,
+            ifnull(
+                round(
+                    o.valid_order_count / nullif(
+                        (
+                            select count(1) from orders where
+                            <include refid="orderDateCondition"/>
+                        ), 0)
+                    ,2)
+            , 0) as order_completion_rate,
+            ifnull(round(o.turnover / nullif(o.valid_order_count, 0), 2), 0) as unit_price,
+            (
+                select count(1) from user where
+                <include refid="userDateCondition"/>
+            ) as new_users
+        from
+        (
+            select
+                ifnull(sum(amount), 0) as turnover,
+                count(1) as valid_order_count
+             from orders
+             where status = 5 and
+            <include refid="orderDateCondition"/>
+        ) o
+    </select>
+
+    <select id="getBusinessDataList" resultType="com.sky.vo.BusinessDataVO">
+        WITH RECURSIVE date_range AS (
+            SELECT DATE(#{begin}) AS dt
+            UNION ALL
+            SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+            FROM date_range
+            WHERE dt &lt; #{end}
+        )
+        select
+            o.date as date,
+            round(o.turnover, 2) as turnover,
+            o.valid_order_count,
+            ifnull(round(o.valid_order_count / nullif((select count(1) from orders where DATE(order_time) = o.date), 0), 2), 0) as order_completion_rate,
+            ifnull(round(o.turnover / nullif(o.valid_order_count, 0), 2), 0) as unit_price,
+            (select count(1) from user where DATE(create_time) = o.date) as new_users
+        from
+        (
+            select
+                dr.dt as date,
+                ifnull(sum(amount), 0) as turnover,
+                count(o.id) as valid_order_count
+            from date_range dr left join orders o on DATE(o.order_time) = dr.dt and status = 5
+            group by dr.dt
+        ) o
+    </select>
+</mapper>

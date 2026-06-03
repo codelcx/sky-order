@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.SetMealMapper">
+
+    <select id="listAllSetMeal" resultType="com.sky.vo.SetmealVO">
+        select s.id,
+               s.category_id,
+               s.name,
+               s.price,
+               s.status,
+               s.description,
+               s.image,
+               s.update_time,
+               c.name as category_name
+        from setmeal s
+        left join category c on s.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                and s.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and s.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and s.status = #{status}
+            </if>
+        </where>
+        order by s.create_time
+    </select>
+
+    <resultMap id="SetmealVOMap" type="com.sky.vo.SetmealVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="setmealDishes" ofType="com.sky.entity.SetmealDish" autoMapping="true">
+            <id column="setmeal_dish_id" property="id"/>
+            <result column="setmeal_dish_name" property="name"/>
+            <result column="setmeal_dish_price" property="price"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSetMealById" resultMap="SetmealVOMap">
+        select s.id,
+               s.category_id,
+               s.name,
+               s.price,
+               s.status,
+               s.description,
+               s.image,
+               s.update_time,
+               c.name as category_name,
+               sd.id as setmeal_dish_id,
+               sd.setmeal_id,
+               sd.dish_id,
+               sd.name as setmeal_dish_name,
+               sd.price as setmeal_dish_price,
+               sd.copies
+        from setmeal s
+                 left join category c on s.category_id = c.id
+                 left join setmeal_dish sd on s.id = sd.setmeal_id
+        where s.id = #{id} and s.status = 1
+    </select>
+
+
+    <update id="updateSetMeal">
+        update setmeal
+        <set>
+            update_time = #{updateTime},
+            update_user = #{updateUser},
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="image != null">image = #{image},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="getSellingSetMealByIds" resultType="java.lang.Long">
+        select
+            id
+        from setmeal
+        where status = 1
+        and id in 
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteSetMealByIds">
+        delete
+        from setmeal
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getSetMealImagesByIds" resultType="java.lang.String">
+        select
+            image
+        from setmeal
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getAllStatusSetMealCount" resultType="com.sky.vo.SetmealOverViewVO">
+        select
+            (select count(1) from setmeal where status = 1) as sold,
+            (select count(1) from setmeal where status = 0) as discontinued
+    </select>
+</mapper>
