@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.result.PageResult;
@@ -41,7 +42,7 @@ public class DishController {
 
     @Operation(summary = "分页查询菜品列表")
     @GetMapping("/page")
-    public Result<PageResult<DishVO>> getDishList(@Valid DishPageQueryDTO dishPageQueryDTO) {
+    public Result<PageResult<DishVO>> getDishList(@Valid @ParameterObject DishPageQueryDTO dishPageQueryDTO) {
         PageResult<DishVO> dishVOPageResult = dishService.getDishList(dishPageQueryDTO);
         return Result.success(dishVOPageResult);
     }

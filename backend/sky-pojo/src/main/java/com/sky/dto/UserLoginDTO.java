@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * C端用户登录
- */
 @Data
 @Schema(description = "用户登录")
 public class UserLoginDTO implements Serializable {

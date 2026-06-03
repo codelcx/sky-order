@@ -11,14 +11,13 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * 菜品口味
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "菜品口味")
 public class DishFlavor implements Serializable {
 
     @Serial
@@ -27,15 +26,15 @@ public class DishFlavor implements Serializable {
     @NotNull(groups = Update.class, message = "口味ID不能为空")
     private Long id;
 
-    //菜品id
+    @Schema(description = "菜品ID")
     @NotNull(message = "菜品ID不能为空")
     private Long dishId;
 
-    //口味名称
+    @Schema(description = "口味名称")
     @NotBlank(message = "口味名称不能为空")
     private String name;
 
-    //口味数据list
+    @Schema(description = "口味数据")
     @NotBlank(message = "口味数据不能为空")
     private String value;
 

@@ -32,16 +32,16 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     /**
      * 注册拦截器，指定拦截路径与放行路径
      */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // 管理端拦截器：拦截 /admin/**，放行登录接口
-        registry.addInterceptor(jwtTokenAdminInterceptor)
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/employee/login");
-
-        // 用户端拦截器：拦截 /user/**，放行微信登录接口
-        registry.addInterceptor(jwtTokenUserInterceptor)
-                .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/user/login");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        // 管理端拦截器：拦截 /admin/**，放行登录接口
+//        registry.addInterceptor(jwtTokenAdminInterceptor)
+//                .addPathPatterns("/admin/**")
+//                .excludePathPatterns("/admin/employee/login");
+//
+//        // 用户端拦截器：拦截 /user/**，放行微信登录接口
+//        registry.addInterceptor(jwtTokenUserInterceptor)
+//                .addPathPatterns("/user/**")
+//                .excludePathPatterns("/user/user/login");
+//    }
 }

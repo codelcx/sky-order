@@ -1,6 +1,7 @@
 package com.sky.controller.user;
 
 import com.sky.dto.OrdersPageQueryDTO;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
@@ -45,7 +46,7 @@ public class OrderController {
 
     @GetMapping("/historyOrders")
     @Operation(summary = "查询历史订单")
-    public Result<PageResult<OrderVO>> getHistoryOrders(OrdersPageQueryDTO ordersPageQueryDTO) {
+    public Result<PageResult<OrderVO>> getHistoryOrders(@ParameterObject OrdersPageQueryDTO ordersPageQueryDTO) {
         log.info("历史订单查询: {}", ordersPageQueryDTO);
         PageResult<OrderVO> orderVOPageResult = orderService.getHistoryOrders(ordersPageQueryDTO);
         return Result.success(orderVOPageResult);

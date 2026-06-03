@@ -13,14 +13,13 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * 购物车
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "购物车")
 public class ShoppingCart implements Serializable {
 
     @Serial
@@ -29,33 +28,34 @@ public class ShoppingCart implements Serializable {
     @NotNull(groups = Update.class, message = "购物车ID不能为空")
     private Long id;
 
-    //名称
+    @Schema(description = "名称")
     private String name;
 
-    //用户id
+    @Schema(description = "用户ID")
     @NotNull(message = "用户ID不能为空")
     private Long userId;
 
-    //菜品id
+    @Schema(description = "菜品ID")
     private Long dishId;
 
-    //套餐id
+    @Schema(description = "套餐ID")
     private Long setmealId;
 
-    //口味
+    @Schema(description = "口味")
     private String dishFlavor;
 
-    //数量
+    @Schema(description = "数量")
     @NotNull(message = "数量不能为空")
     private Integer number;
 
-    //金额
+    @Schema(description = "金额")
     @NotNull(message = "金额不能为空")
     private BigDecimal amount;
 
-    //图片
+    @Schema(description = "图片")
     private String image;
 
+    @Schema(description = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 }

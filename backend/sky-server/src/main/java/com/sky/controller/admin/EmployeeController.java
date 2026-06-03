@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -82,7 +83,7 @@ public class EmployeeController {
 
     @GetMapping("/page")
     @Operation(summary = "获取员工列表")
-    public Result<PageResult<Employee>> listEmployee(EmployeePageQueryDTO employeePageQueryDTO) {
+    public Result<PageResult<Employee>> listEmployee(@ParameterObject EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("员工分页查询，参数为：{}", employeePageQueryDTO);
         PageResult<Employee> employeePageResult = employeeService.listEmployee(employeePageQueryDTO);
         return Result.success(employeePageResult);

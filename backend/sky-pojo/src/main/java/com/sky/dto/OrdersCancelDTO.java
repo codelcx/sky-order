@@ -14,7 +14,6 @@ public class OrdersCancelDTO implements Serializable {
     @NotNull(message = "订单ID不能为空")
     private Long id;
 
-    //订单取消原因
     @Schema(description = "取消原因", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "取消原因不能为空")
     private String cancelReason;

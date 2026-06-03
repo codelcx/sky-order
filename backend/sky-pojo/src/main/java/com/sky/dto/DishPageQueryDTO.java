@@ -19,11 +19,9 @@ public class DishPageQueryDTO implements Serializable {
     @Schema(description = "查询菜品名称")
     private String name;
 
-    //分类id
     @Schema(description = "分类ID")
     private Integer categoryId;
 
-    //状态 0表示禁用 1表示启用
     @Schema(description = "菜品状态（0:禁用 1:启用）", allowableValues = "0,1")
     @Range(max = 1L, message = "菜品状态不合法")
     private Integer status;

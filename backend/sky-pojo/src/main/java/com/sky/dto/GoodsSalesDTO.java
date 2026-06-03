@@ -14,11 +14,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Builder
 @Schema(description = "商品销量")
 public class GoodsSalesDTO implements Serializable {
-    //商品名称
     @Schema(description = "商品名称")
     private String name;
 
-    //销量
     @Schema(description = "销量")
     private Integer number;
 }

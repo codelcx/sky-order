@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.OrdersCancelDTO;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersRejectionDTO;
@@ -31,7 +32,7 @@ public class OrderController {
 
     @GetMapping("/conditionSearch")
     @Operation(summary = "订单搜素")
-    public Result<PageResult<OrderVO>> getOrderListByCondition(OrdersPageQueryDTO ordersPageQueryDTO) {
+    public Result<PageResult<OrderVO>> getOrderListByCondition(@ParameterObject OrdersPageQueryDTO ordersPageQueryDTO) {
         log.info("后台订单管理分页查询，{}", ordersPageQueryDTO);
         PageResult<OrderVO> orderVOPageResult = orderService.getOrderListByCondition(ordersPageQueryDTO);
         return Result.success(orderVOPageResult);

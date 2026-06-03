@@ -11,14 +11,13 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * 订单明细
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "订单明细")
 public class OrderDetail implements Serializable {
 
     @Serial
@@ -27,30 +26,30 @@ public class OrderDetail implements Serializable {
     @NotNull(groups = Update.class, message = "明细ID不能为空")
     private Long id;
 
-    //名称
+    @Schema(description = "名称")
     private String name;
 
-    //订单id
+    @Schema(description = "订单ID")
     @NotNull(message = "订单ID不能为空")
     private Long orderId;
 
-    //菜品id
+    @Schema(description = "菜品ID")
     private Long dishId;
 
-    //套餐id
+    @Schema(description = "套餐ID")
     private Long setmealId;
 
-    //口味
+    @Schema(description = "口味")
     private String dishFlavor;
 
-    //数量
+    @Schema(description = "数量")
     @NotNull(message = "数量不能为空")
     private Integer number;
 
-    //金额
+    @Schema(description = "金额")
     @NotNull(message = "金额不能为空")
     private BigDecimal amount;
 
-    //图片
+    @Schema(description = "图片")
     private String image;
 }

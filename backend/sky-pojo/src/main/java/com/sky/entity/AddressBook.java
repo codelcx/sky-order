@@ -13,14 +13,13 @@ import jakarta.validation.constraints.Pattern;
 
 import java.io.Serial;
 import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * 地址簿
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "地址簿")
 public class AddressBook implements Serializable {
 
     @Serial
@@ -29,54 +28,54 @@ public class AddressBook implements Serializable {
     @NotNull(groups = Update.class, message = "地址ID不能为空")
     private Long id;
 
-    //用户id
+    @Schema(description = "用户ID")
     private Long userId;
 
-    //收货人
+    @Schema(description = "收货人")
     @NotBlank(message = "收货人姓名不能为空")
     private String consignee;
 
-    //手机号
+    @Schema(description = "手机号")
     @NotBlank(message = "手机号不能为空")
     private String phone;
 
-    //性别 0 女 1 男
+    @Schema(description = "性别（0:女 1:男）", allowableValues = "0,1")
     @Pattern(regexp = "[0-1]", message = "性别不合法")
     @Builder.Default
     private String sex = "1";
 
-    //省级区划编号
+    @Schema(description = "省级区划编号")
     @NotBlank(message = "provinceCode不能为空")
     private String provinceCode;
 
-    //省级名称
+    @Schema(description = "省级名称")
     @NotBlank(message = "省级名称不能为空")
     private String provinceName;
 
-    //市级区划编号
+    @Schema(description = "市级区划编号")
     @NotBlank(message = "cityCode不能为空")
     private String cityCode;
 
-    //市级名称
+    @Schema(description = "市级名称")
     @NotBlank(message = "市级名称不能为空")
     private String cityName;
 
-    //区级区划编号
+    @Schema(description = "区级区划编号")
     @NotBlank(message = "districtCode不能为空")
     private String districtCode;
 
-    //区级名称
+    @Schema(description = "区级名称")
     @NotBlank(message = "区级名称不能为空")
     private String districtName;
 
-    //详细地址
+    @Schema(description = "详细地址")
     @NotBlank(message = "详细地址不能为空")
     private String detail;
 
-    //标签
+    @Schema(description = "标签")
     private String label;
 
-    //是否默认 0否 1是
+    @Schema(description = "是否默认（0:否 1:是）", allowableValues = "0,1")
     @Range(max = 1L, message = "isDefault不合法")
     @Builder.Default
     private Integer isDefault = 0;

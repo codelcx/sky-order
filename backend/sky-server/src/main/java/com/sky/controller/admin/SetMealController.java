@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
@@ -40,7 +41,7 @@ public class SetMealController {
 
     @Operation(summary = "套餐分页查询")
     @GetMapping("/page")
-    public Result<PageResult<SetmealVO>> listAllSetMeal(SetmealPageQueryDTO setmealPageQueryDTO) {
+    public Result<PageResult<SetmealVO>> listAllSetMeal(@ParameterObject SetmealPageQueryDTO setmealPageQueryDTO) {
         log.info("套餐分页查询: {}", setmealPageQueryDTO);
         PageResult<SetmealVO> setmealVOPageResult = setMealService.listAllSetMeal(setmealPageQueryDTO);
         return Result.success(setmealVOPageResult);

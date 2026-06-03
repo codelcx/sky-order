@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.CategoryDTO;
+import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
@@ -32,7 +33,7 @@ public class CategoryController {
 
     @GetMapping("/page")
     @Operation(summary = "分类分页查询")
-    public Result<PageResult<Category>> getCategoryList(@Valid CategoryPageQueryDTO categoryPageQueryDTO) {
+    public Result<PageResult<Category>> getCategoryList(@Valid @ParameterObject CategoryPageQueryDTO categoryPageQueryDTO) {
         log.info("分类查询，参数为：{}", categoryPageQueryDTO);
         PageResult<Category> categoryPageResult = categoryService.getCategoryList(categoryPageQueryDTO);
         return Result.success(categoryPageResult);
