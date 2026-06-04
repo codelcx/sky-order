@@ -5,7 +5,6 @@ import com.sky.interceptor.JwtTokenUserInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -17,17 +16,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
     private final JwtTokenUserInterceptor jwtTokenUserInterceptor;
-
-    /**
-     * 配置静态资源映射，支持 Knife4j 文档访问
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/doc.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
 
     /**
      * 注册拦截器，指定拦截路径与放行路径

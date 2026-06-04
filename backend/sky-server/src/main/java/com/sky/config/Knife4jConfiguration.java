@@ -5,17 +5,21 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class Knife4jConfiguration {
+@Profile("dev")
+public class Knife4jConfiguration implements WebMvcConfigurer {
 
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("猫猫点单")
+                        .title("点单平台")
                         .version("1.0")
-                        .description("猫猫点单项目接口文档"));
+                        .description("点单平台项目接口文档"));
     }
 
     @Bean
@@ -32,5 +36,13 @@ public class Knife4jConfiguration {
                 .group("用户端接口")
                 .pathsToMatch("/user/**")
                 .build();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
