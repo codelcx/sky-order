@@ -1,0 +1,109 @@
+:root {
+  --sky-color-primary: #FF6B2C;
+  --sky-color-primary-hover: #FF7E47;
+  --sky-color-primary-active: #F85A16;
+  --sky-color-primary-light: #FFF2EC;
+  --sky-color-primary-border: #FFD3BF;
+
+  --sky-color-success: #52C41A;
+  --sky-color-success-light: #F6FFED;
+  --sky-color-warning: #FAAD14;
+  --sky-color-warning-light: #FFFBE6;
+  --sky-color-error: #FF4D4F;
+  --sky-color-error-light: #FFF1F0;
+  --sky-color-info: #1890FF;
+  --sky-color-info-light: #E6F7FF;
+
+  --sky-bg-page: #F7F7F8;
+  --sky-bg-card: #FFFFFF;
+  --sky-bg-popup: #FFFFFF;
+
+  --sky-border-color: #E8E8E8;
+  --sky-border-light: #F0F0F0;
+
+  --sky-text-primary: #1F1F1F;
+  --sky-text-secondary: #595959;
+  --sky-text-tertiary: #8C8C8C;
+  --sky-text-placeholder: #BFBFBF;
+  --sky-text-white: #FFFFFF;
+
+  --sky-font-family: "PingFang SC", "Inter", "Microsoft YaHei", sans-serif;
+
+  --sky-font-size-page-title: 24px;
+  --sky-font-size-module-title: 20px;
+  --sky-font-size-statistic: 40px;
+  --sky-font-size-body: 14px;
+  --sky-font-size-small: 12px;
+
+  --sky-font-weight-page-title: 600;
+  --sky-font-weight-module-title: 600;
+  --sky-font-weight-statistic: 700;
+  --sky-font-weight-body: 400;
+  --sky-font-weight-small: 400;
+
+  --sky-line-height-page-title: 32px;
+  --sky-line-height-module-title: 28px;
+  --sky-line-height-statistic: 48px;
+  --sky-line-height-body: 22px;
+  --sky-line-height-small: 18px;
+
+  --sky-radius-xs: 8px;
+  --sky-radius-input: 12px;
+  --sky-radius-button: 12px;
+  --sky-radius-md: 16px;
+  --sky-radius-card: 20px;
+  --sky-radius-statistic-card: 24px;
+  --sky-radius-pill: 999px;
+
+  --sky-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --sky-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --sky-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+  --sky-sidebar-width: 240px;
+  --sky-header-height: 72px;
+  --sky-page-padding: 24px;
+  --sky-card-padding: 24px;
+  --sky-section-gap: 24px;
+  --sky-card-gap: 20px;
+
+  --sky-space-1: 4px;
+  --sky-space-2: 8px;
+  --sky-space-3: 12px;
+  --sky-space-4: 16px;
+  --sky-space-5: 20px;
+  --sky-space-6: 24px;
+  --sky-space-7: 32px;
+  --sky-space-8: 40px;
+  --sky-space-9: 48px;
+
+  --sky-sidebar-bg: #FFFFFF;
+  --sky-sidebar-text: #8C8C8C;
+  --sky-sidebar-active-text: #FF6B2C;
+  --sky-sidebar-active-bg: #FFF7F3;
+  --sky-sidebar-active-border: #FF6B2C;
+
+  --sky-table-row-height: 56px;
+  --sky-table-header-color: var(--sky-text-secondary);
+  --sky-table-body-color: var(--sky-text-primary);
+  --sky-table-hover-bg: #FAFAFA;
+
+  --sky-btn-primary-bg: var(--sky-color-primary);
+  --sky-btn-primary-color: #FFFFFF;
+  --sky-btn-secondary-bg: #FFFFFF;
+  --sky-btn-secondary-border: #E8E8E8;
+  --sky-btn-secondary-color: #595959;
+  --sky-btn-danger-bg: #FFF1F0;
+  --sky-btn-danger-color: #FF4D4F;
+
+  --sky-tag-radius: 999px;
+  --sky-tag-pending-bg: #FFF7E6;
+  --sky-tag-pending-color: #FA8C16;
+  --sky-tag-success-bg: #F6FFED;
+  --sky-tag-success-color: #52C41A;
+  --sky-tag-disabled-bg: #F5F5F5;
+  --sky-tag-disabled-color: #8C8C8C;
+  --sky-tag-processing-bg: #E6F7FF;
+  --sky-tag-processing-color: #1890FF;
+  --sky-tag-danger-bg: #FFF1F0;
+  --sky-tag-danger-color: #FF4D4F;
+}

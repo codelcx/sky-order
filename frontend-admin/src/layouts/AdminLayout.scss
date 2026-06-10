@@ -1,0 +1,231 @@
+// Layout variables
+$sidebar-width: 220px;
+$sidebar-width-collapsed: 180px;
+$brand-height: 52px;
+$header-height: 52px;
+$nav-item-height: 40px;
+$nav-gap: 10px;
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f6f7f9;
+}
+
+.admin-sidebar {
+  width: $sidebar-width;
+  flex: 0 0 $sidebar-width;
+  background: var(--sky-sidebar-bg);
+  border-right: 1px solid var(--sky-border-light);
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: $nav-gap;
+  height: $brand-height;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--sky-border-light);
+
+  &__mark {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--sky-color-primary);
+    color: var(--sky-text-white);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  &__name {
+    color: #14172c;
+    font-size: 15px;
+    font-weight: 800;
+  }
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  padding-top: 6px;
+
+  &__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $nav-gap;
+    width: 100%;
+    height: $nav-item-height;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #9aa3b2;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+
+    &:hover {
+      color: var(--sky-color-primary);
+      background: #fff8f2;
+    }
+
+    &--active {
+      color: var(--sky-color-primary);
+      background: #fff8ef;
+
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--sky-color-primary);
+        content: '';
+      }
+    }
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    color: currentColor;
+  }
+}
+
+.admin-workspace {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: $header-height;
+  padding: 0 20px;
+  background: var(--sky-bg-card);
+  border-bottom: 1px solid var(--sky-border-light);
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #4b5565;
+  }
+
+  &__date {
+    color: #a1a8b7;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__bell {
+    position: relative;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #697386;
+    cursor: pointer;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+
+    span {
+      position: absolute;
+      top: 2px;
+      right: 1px;
+      width: 11px;
+      height: 11px;
+      border: 2px solid var(--sky-bg-card);
+      border-radius: 50%;
+      background: #ff3445;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #3f4858;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  &__avatar {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--sky-color-primary);
+    color: var(--sky-text-white);
+
+    svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.4;
+    }
+  }
+}
+
+.admin-content {
+  min-height: calc(100vh - #{$header-height});
+  padding: 16px 24px 24px;
+  background: #f6f7f9;
+}
+
+.placeholder-page {
+  min-height: 240px;
+
+  h2 {
+    color: #14172c;
+    font-size: 24px;
+    font-weight: 800;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: $sidebar-width-collapsed;
+    flex-basis: $sidebar-width-collapsed;
+  }
+
+  .admin-brand {
+    padding: 0 14px;
+
+    &__name {
+      font-size: 14px;
+    }
+  }
+
+  .admin-nav__item {
+    gap: 8px;
+    padding: 0 14px;
+    font-size: 12px;
+  }
+
+  .admin-header {
+    padding-inline: 16px;
+
+    &__actions {
+      gap: 12px;
+    }
+  }
+}

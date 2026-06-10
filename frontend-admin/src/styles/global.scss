@@ -1,0 +1,29 @@
+@use './variables';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--sky-font-family);
+  font-size: var(--sky-font-size-body);
+  line-height: var(--sky-line-height-body);
+  color: var(--sky-text-primary);
+  background-color: var(--sky-bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
