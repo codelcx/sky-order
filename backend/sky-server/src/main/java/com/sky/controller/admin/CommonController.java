@@ -2,7 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.annotation.validation.File;
 import com.sky.result.Result;
-//import com.sky.utils.AliOssUtil;
+import com.sky.utils.LocalStorageUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Validated
 public class CommonController {
 
-//    @Autowired
-//    private AliOssUtil aliOssUtil;
+    @Autowired
+    private LocalStorageUtil localStorageUtil;
 
     @PostMapping("/upload")
     @Operation(summary = "文件上传接口")
@@ -31,9 +31,8 @@ public class CommonController {
             @File(maxSize = 5, allowFileTypes = {"jpg", "jpeg", "png", "gif"})
             MultipartFile file
     ) {
-//        String path = aliOssUtil.upload(file);
-//        return Result.success(path);
-        return Result.success();
+        String path = localStorageUtil.upload(file);
+        return Result.success(path);
     }
 
 }

@@ -5,7 +5,10 @@ import com.sky.interceptor.JwtTokenUserInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.nio.file.Paths;
 
 /**
  * Web MVC 配置：注册拦截器
@@ -20,6 +23,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     /**
      * 注册拦截器，指定拦截路径与放行路径
      */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String uploadPath = Paths.get(System.getProperty("user.dir"), "uploads").toAbsolutePath().toString();
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:" + uploadPath + "/");
+    }
+
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
 //        // 管理端拦截器：拦截 /admin/**，放行登录接口

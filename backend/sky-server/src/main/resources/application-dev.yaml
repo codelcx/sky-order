@@ -17,3 +17,12 @@ spring:
       port: 6379
       password:
       database: 0
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+sky:
+  local-storage:
+    upload-path: ./uploads
