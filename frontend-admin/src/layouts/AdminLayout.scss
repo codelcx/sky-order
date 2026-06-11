@@ -16,7 +16,6 @@ $nav-gap: 10px;
   width: $sidebar-width;
   flex: 0 0 $sidebar-width;
   background: var(--sky-sidebar-bg);
-  border-right: 1px solid var(--sky-border-light);
 }
 
 .admin-brand {
@@ -187,7 +186,7 @@ $nav-gap: 10px;
 
 .admin-content {
   min-height: calc(100vh - #{$header-height});
-  padding: 16px 24px 24px;
+  padding: var(--sky-page-padding);
   background: #f6f7f9;
 }
 

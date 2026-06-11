@@ -14,7 +14,7 @@ export interface PageResult<T> {
 }
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL as string | undefined,
+  baseURL: import.meta.env.DEV ? '/api' : (import.meta.env.VITE_API_BASE_URL as string | undefined),
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 })

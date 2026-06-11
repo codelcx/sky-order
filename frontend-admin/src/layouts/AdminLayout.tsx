@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import './AdminLayout.scss'
 
 type NavigationItem = {
