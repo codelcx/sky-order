@@ -31,4 +31,6 @@ public class CategoryDTO implements Serializable {
     @NotNull(message = "排序值不能为空")
     private Integer sort;
 
+    @Schema(description = "分类状态（0:禁用 1:启用）", allowableValues = "0,1")
+    private Integer status;
 }

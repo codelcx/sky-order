@@ -7,6 +7,7 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.exception.BusinessException;
+import com.sky.vo.CategoryPageVO;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
@@ -63,12 +64,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageResult<Category> getCategoryList(CategoryPageQueryDTO categoryPageQueryDTO) {
+    public PageResult<CategoryPageVO> getCategoryList(CategoryPageQueryDTO categoryPageQueryDTO) {
         try (Page<Object> page = PageHelper.startPage(
                 categoryPageQueryDTO.getPage(),
                 categoryPageQueryDTO.getPageSize())) {
 
-            Page<Category> categoryPage = page.doSelectPage(() ->
+            Page<CategoryPageVO> categoryPage = page.doSelectPage(() ->
                     categoryMapper.getCategoryList(categoryPageQueryDTO)
             );
 

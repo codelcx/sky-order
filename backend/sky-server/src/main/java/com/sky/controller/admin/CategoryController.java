@@ -5,6 +5,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
+import com.sky.vo.CategoryPageVO;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import com.sky.validator.groups.Add;
@@ -31,11 +32,19 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("/{id}")
+    @Operation(summary = "根据ID查询分类")
+    public Result<Category> getCategoryById(@PathVariable @Parameter(description = "分类ID", required = true) Long id) {
+        log.info("根据ID查询分类，参数：{}", id);
+        Category category = categoryService.getCategoryById(id);
+        return Result.success(category);
+    }
+
     @GetMapping("/page")
     @Operation(summary = "分类分页查询")
-    public Result<PageResult<Category>> getCategoryList(@Valid @ParameterObject CategoryPageQueryDTO categoryPageQueryDTO) {
+    public Result<PageResult<CategoryPageVO>> getCategoryList(@Valid @ParameterObject CategoryPageQueryDTO categoryPageQueryDTO) {
         log.info("分类查询，参数为：{}", categoryPageQueryDTO);
-        PageResult<Category> categoryPageResult = categoryService.getCategoryList(categoryPageQueryDTO);
+        PageResult<CategoryPageVO> categoryPageResult = categoryService.getCategoryList(categoryPageQueryDTO);
         return Result.success(categoryPageResult);
     }
 
@@ -55,9 +64,9 @@ public class CategoryController {
         return result ? Result.success() : Result.error("更新失败");
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Operation(summary = "根据ID删除分类")
-    public Result<?> delCategory(@RequestParam @Parameter(description = "分类ID", required = true) Long id) {
+    public Result<?> delCategory(@PathVariable @Parameter(description = "分类ID", required = true) Long id) {
         log.info("删除分类，参数为: {}", id);
         boolean result = categoryService.delCategory(id);
         return result ? Result.success() : Result.error("删除失败");

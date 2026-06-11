@@ -4,11 +4,12 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
+import com.sky.vo.CategoryPageVO;
 
 import java.util.List;
 
 public interface CategoryService {
-    PageResult<Category> getCategoryList(CategoryPageQueryDTO categoryPageQueryDTO);
+    PageResult<CategoryPageVO> getCategoryList(CategoryPageQueryDTO categoryPageQueryDTO);
 
     boolean addCategory(CategoryDTO categoryDTO);
 
