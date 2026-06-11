@@ -35,6 +35,65 @@ CREATE TABLE `category` (
   UNIQUE KEY `idx_category_name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='菜品及套餐分类';
 
+DROP TABLE IF EXISTS `dict_type`;
+CREATE TABLE `dict_type` (
+  `id`          bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name`        varchar(100) NOT NULL COMMENT '字典名称',
+  `code`        varchar(100) NOT NULL COMMENT '字典编码',
+  `description` varchar(500) DEFAULT NULL COMMENT '描述',
+  `status`      tinyint NOT NULL DEFAULT '1' COMMENT '状态 0:禁用 1:启用',
+  `sort`        int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `create_user` bigint DEFAULT NULL COMMENT '创建人',
+  `update_user` bigint DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='字典类型表';
+DROP TABLE IF EXISTS `dict_data`;
+CREATE TABLE `dict_data` (
+  `id`           bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `dict_type_id` bigint NOT NULL COMMENT '字典类型ID',
+  `label`        varchar(100) NOT NULL COMMENT '字典标签',
+  `value`        varchar(100) NOT NULL COMMENT '字典键值',
+  `is_default`   tinyint NOT NULL DEFAULT '0' COMMENT '是否默认 0:否 1:是',
+  `status`       tinyint NOT NULL DEFAULT '1' COMMENT '状态 0:禁用 1:启用',
+  `sort`         int NOT NULL DEFAULT '0' COMMENT '排序',
+  `remark`       varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_time`  datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time`  datetime DEFAULT NULL COMMENT '更新时间',
+  `create_user`  bigint DEFAULT NULL COMMENT '创建人',
+  `update_user`  bigint DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`),
+  KEY `idx_dict_type_id` (`dict_type_id`),
+  CONSTRAINT `fk_dict_data_type` FOREIGN KEY (`dict_type_id`) REFERENCES `dict_type` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='字典数据表';
+-- ----------------------------
+-- 字典类型数据
+-- ----------------------------
+INSERT INTO `dict_type` VALUES (1, '支付状态', 'pay_status', '支付状态', 1, 1, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_type` VALUES (2, '订单状态', 'order_status', '订单状态', 1, 2, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_type` VALUES (3, '职业', 'occupation', '职业', 1, 3, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+
+INSERT INTO `dict_data` VALUES (1, 1, '未支付', '0', 1, 1, 1, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (2, 1, '已支付', '1', 0, 1, 2, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (3, 1, '退款', '2', 0, 1, 3, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+
+INSERT INTO `dict_data` VALUES (4, 2, '待付款', '1', 1, 1, 1, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (5, 2, '待接单', '2', 0, 1, 2, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (6, 2, '已接单', '3', 0, 1, 3, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (7, 2, '派送中', '4', 0, 1, 4, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (8, 2, '已完成', '5', 0, 1, 5, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (9, 2, '已取消', '6', 0, 1, 6, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (10, 2, '退款', '7', 0, 1, 7, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+
+INSERT INTO `dict_data` VALUES (11, 3, '厨师', '1', 0, 1, 1, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (12, 3, '服务员', '2', 0, 1, 2, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (13, 3, '收银员', '3', 0, 1, 3, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (14, 3, '经理', '4', 0, 1, 4, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (15, 3, '配送员', '5', 0, 1, 5, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+INSERT INTO `dict_data` VALUES (16, 3, '管理员', '6', 0, 1, 6, NULL, '2022-06-09 22:09:18', '2022-06-09 22:09:18', 1, 1);
+
 INSERT INTO `category` VALUES (11,1,'酒水饮料',10,1,'2022-06-09 22:09:18','2022-06-09 22:09:18',1,1);
 INSERT INTO `category` VALUES (12,1,'传统主食',9,1,'2022-06-09 22:09:32','2022-06-09 22:18:53',1,1);
 INSERT INTO `category` VALUES (13,2,'人气套餐',12,1,'2022-06-09 22:11:38','2022-06-10 11:04:40',1,1);

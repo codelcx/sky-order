@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DictTypeMapper">
+    <update id="updateDictType">
+        update dict_type
+        <set>
+            update_user = #{updateUser},
+            update_time = #{updateTime},
+            <if test="name != null">name = #{name},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sort != null">sort = #{sort}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getDictTypeList" resultType="com.sky.entity.DictType">
+        select id,
+               name,
+               code,
+               description,
+               status,
+               sort,
+               create_time,
+               update_time,
+               create_user,
+               update_user
+        from dict_type
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                and code like concat('%', #{code}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by sort desc
+    </select>
+</mapper>
