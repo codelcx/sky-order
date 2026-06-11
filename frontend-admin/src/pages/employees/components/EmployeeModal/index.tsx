@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react'
+import { Select } from 'antd'
 import {
   createEmployee,
   EmployeeStatus,
@@ -10,6 +11,8 @@ import {
   type Employee,
   type UpdateEmployeeBody,
 } from '@/api/employee'
+import { DICT_CODE } from '@/constants'
+import { getDictDataListByCode } from '@/api/dict'
 
 interface EmployeeModalProps {
   open: boolean
@@ -27,6 +30,14 @@ export default function EmployeeModal(props: EmployeeModalProps) {
   const [messageApi, messageContextHolder] = message.useMessage()
   const [form] = Form.useForm<EmployeeFormValues>()
   const [submitLoading, setSubmitLoading] = useState(false)
+  const [occupationOptions, setOccupationOptions] = useState<{ label: string; value: string }[]>([])
+
+  useEffect(() => {
+    if (!open) { return }
+    getDictDataListByCode(DICT_CODE.OCCUPATION)
+      .then((list) => setOccupationOptions(list.map((item) => ({ label: item.label, value: item.value }))))
+      .catch(() => {})
+  }, [open])
 
   const titleText = mode === 'create' ? '新增员工' : '编辑员工'
 
@@ -165,7 +176,11 @@ export default function EmployeeModal(props: EmployeeModalProps) {
             </Form.Item>
 
             <Form.Item label="职业" name="job">
-              <Input autoComplete="off" placeholder="请输入职位" />
+              <Select
+                allowClear
+                options={occupationOptions}
+                placeholder="请选择职业"
+              />
             </Form.Item>
 
             <Form.Item label="地址" name="address">

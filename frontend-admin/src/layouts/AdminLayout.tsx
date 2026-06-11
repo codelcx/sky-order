@@ -38,6 +38,11 @@ const navigationItems: NavigationItem[] = [
     icon: 'lucide:users-round',
     label: '员工管理',
   },
+  {
+    path: '/dict',
+    icon: 'lucide:book-open',
+    label: '字典管理',
+  },
 ]
 
 function formatToday() {

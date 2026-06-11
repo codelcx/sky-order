@@ -1,6 +1,6 @@
 @use '@/styles/table-scroll';
 
-.employees-page {
+.dict-page {
   @extend %table-scroll-page;
   color: var(--sky-text-primary);
 
@@ -19,6 +19,69 @@
     justify-content: flex-end;
     min-height: 64px;
     padding: 0 24px;
+  }
+
+  &__data-header {
+    @extend %table-scroll-header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--sky-border-light);
+  }
+
+  &__data-header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 36px;
+    padding: 0 12px;
+    color: var(--sky-text-secondary);
+    font-size: var(--sky-font-size-body);
+
+    &:hover {
+      background: var(--sky-color-primary-light) !important;
+      color: var(--sky-color-primary) !important;
+    }
+
+    .iconify {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__data-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__data-header-name {
+    color: var(--sky-text-primary);
+    font-size: 16px;
+    font-weight: var(--sky-font-weight-module-title);
+  }
+
+  &__data-header-code {
+    color: var(--sky-text-tertiary);
+    font-size: var(--sky-font-size-small);
+    font-weight: var(--sky-font-weight-body);
+  }
+
+  &__type-name {
+    color: var(--sky-text-primary);
+    font-weight: var(--sky-font-weight-page-title);
+  }
+
+  &__type-code {
+    color: var(--sky-text-tertiary);
   }
 
   &__create-button {
@@ -49,9 +112,13 @@
   &__table {
     @extend %table-scroll-table;
     padding: 0 24px;
+
+    &.ant-table-wrapper {
+      height: 100%;
+    }
+
     .ant-table {
-      color: var(--sky-text-secondary);
-      font-size: var(--sky-font-size-body);
+      height: 100%;
     }
 
     .ant-table-thead > tr > th {
@@ -85,50 +152,6 @@
     }
   }
 
-  &__employee-cell {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  &__employee-avatar {
-    display: inline-grid;
-    width: 36px;
-    height: 36px;
-    flex: 0 0 auto;
-    place-items: center;
-    border-radius: 50%;
-    color: var(--sky-text-white);
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-  }
-
-  &__employee-meta {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  &__employee-name {
-    overflow: hidden;
-    color: var(--sky-text-primary);
-    font-size: var(--sky-font-size-body);
-    font-weight: var(--sky-font-weight-page-title);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__employee-username {
-    overflow: hidden;
-    color: var(--sky-text-tertiary);
-    font-size: var(--sky-font-size-small);
-    font-weight: var(--sky-font-weight-small);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   &__tag {
     min-width: 52px;
     margin: 0;
@@ -140,17 +163,12 @@
     text-align: center;
   }
 
-  &__tag--sex {
-    background: var(--sky-tag-processing-bg);
-    color: var(--sky-tag-processing-color);
-  }
-
   &__tag--enabled {
     background: var(--sky-tag-success-bg);
     color: var(--sky-tag-success-color);
   }
 
-  &__tag--resigned {
+  &__tag--disabled {
     background: var(--sky-tag-disabled-bg);
     color: var(--sky-tag-disabled-color);
   }
@@ -261,44 +279,6 @@
     }
   }
 
-  &__sex-group {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    width: 100%;
-
-    .ant-radio-button-wrapper {
-      height: 38px;
-      border: 1px solid var(--sky-border-color);
-      border-radius: var(--sky-radius-input);
-      color: var(--sky-text-tertiary);
-      font-size: 13px;
-      font-weight: var(--sky-font-weight-body);
-      line-height: 36px;
-      text-align: center;
-
-      &::before {
-        display: none;
-      }
-
-      &:first-child,
-      &:last-child {
-        border-radius: var(--sky-radius-input);
-      }
-    }
-
-    .ant-radio-button-wrapper-checked {
-      border-color: var(--sky-color-primary) !important;
-      background: var(--sky-color-primary-light) !important;
-      color: var(--sky-color-primary) !important;
-      box-shadow: none !important;
-    }
-  }
-
-  &__status-field {
-    grid-column: 1 / -1;
-  }
-
   &__modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -332,10 +312,21 @@
 }
 
 @media (max-width: 820px) {
-  .employees-page {
+  .dict-page {
     &__header {
       justify-content: flex-end;
       padding: 16px 18px;
+    }
+
+    &__data-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+    }
+
+    &__data-header-left {
+      flex-wrap: wrap;
     }
 
     &__create-button {

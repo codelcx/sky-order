@@ -1,0 +1,5 @@
+%table-scroll-page   { height: 100%; }
+%table-scroll-card   { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+%table-scroll-header { flex: 0 0 auto; }
+%table-scroll-wrap   { flex: 1; overflow: hidden; }
+%table-scroll-table  { height: 100%; }

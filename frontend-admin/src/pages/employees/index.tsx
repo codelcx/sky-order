@@ -8,6 +8,9 @@ import {
   updateEmployeeStatus,
   type Employee,
 } from '@/api/employee'
+import { getDictDataListByCode } from '@/api/dict'
+import { DICT_CODE } from '@/constants'
+import { useTableScroll } from '@/hooks/useTableScroll'
 import EmployeeModal from './components/EmployeeModal'
 import './index.scss'
 
@@ -23,6 +26,12 @@ function getInitial(name: string) {
 function getAvatarColor(name: string) {
   const colors = ['#ff8a00', '#4a90e2', '#18c964', '#9b6bff', '#ff5ab3', '#14b8a6']
   const hash = Array.from(name).reduce((sum, char) => sum + char.charCodeAt(0), 0)
+  return colors[hash % colors.length]
+}
+
+function getTagColor(value: string) {
+  const colors = ['#ff8a00', '#4a90e2', '#18c964', '#9b6bff', '#ff5ab3', '#14b8a6', '#f56a00', '#7265e6']
+  const hash = Array.from(value).reduce((sum, char) => sum + char.charCodeAt(0), 0)
   return colors[hash % colors.length]
 }
 
@@ -57,6 +66,18 @@ export default function EmployeesPage() {
   const [currentEmployeeId, setCurrentEmployeeId] = useState<number | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const { tableWrapRef, scrollY } = useTableScroll()
+  const [occupationMap, setOccupationMap] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    getDictDataListByCode(DICT_CODE.OCCUPATION)
+      .then((list) => {
+        const map: Record<string, string> = {}
+        list.forEach((item) => { map[item.value] = item.label })
+        setOccupationMap(map)
+      })
+      .catch(() => {})
+  }, [])
 
   const loadEmployees = useCallback(async (page: number, size?: number) => {
     setLoading(true)
@@ -157,7 +178,14 @@ export default function EmployeesPage() {
       dataIndex: 'job',
       key: 'job',
       width: 160,
-      render: (value: string) => <span>{value || '--'}</span>,
+      render: (value: string) => {
+        const label = value ? (occupationMap[value] || value) : '--'
+        return (
+          <Tag className="employees-page__tag" bordered={false} color={getTagColor(value || '')}>
+            {label}
+          </Tag>
+        )
+      },
     },
     {
       title: '联系电话',
@@ -185,6 +213,7 @@ export default function EmployeesPage() {
       dataIndex: 'sex',
       key: 'sex',
       width: 120,
+      align: 'center',
       render: (value: Sex) => (
         <Tag className="employees-page__tag employees-page__tag--sex" bordered={false}>
           {sexLabels[value]}
@@ -203,6 +232,7 @@ export default function EmployeesPage() {
       dataIndex: 'status',
       key: 'status',
       width: 120,
+      align: 'center',
       render: (value: EmployeeStatus) => (
         <Tag
           className={`employees-page__tag ${
@@ -285,27 +315,29 @@ export default function EmployeesPage() {
             </Button>
           </div>
 
-          <Spin spinning={loading}>
-            <Table<Employee>
-              className="employees-page__table"
-              columns={columns}
-              dataSource={records}
-              pagination={{
-                current: currentPage,
-                pageSize,
-                total,
-                onChange: (page, size) => {
-                  setPageSize(size)
-                  void loadEmployees(page, size)
-                },
-                pageSizeOptions: ['10', '20', '50'],
-                showSizeChanger: true,
-                showTotal: (total) => `共 ${Math.ceil(total / pageSize)} 页 / ${total} 条`,
-              }}
-              rowKey="id"
-              scroll={{ x: 980 }}
-            />
-          </Spin>
+          <div ref={tableWrapRef} className="employees-page__table-wrap">
+            <Spin spinning={loading}>
+              <Table<Employee>
+                className="employees-page__table"
+                columns={columns}
+                dataSource={records}
+                pagination={{
+                  current: currentPage,
+                  pageSize,
+                  total,
+                  onChange: (page, size) => {
+                    setPageSize(size)
+                    void loadEmployees(page, size)
+                  },
+                  pageSizeOptions: ['10', '20', '50'],
+                  showSizeChanger: true,
+                  showTotal: (total) => `共 ${Math.ceil(total / pageSize)} 页 / ${total} 条`,
+                }}
+                rowKey="id"
+                scroll={{ y: scrollY, x: 980 }}
+              />
+            </Spin>
+          </div>
         </div>
 
         <EmployeeModal

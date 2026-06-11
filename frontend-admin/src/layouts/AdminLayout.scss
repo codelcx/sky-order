@@ -185,7 +185,8 @@ $nav-gap: 10px;
 }
 
 .admin-content {
-  min-height: calc(100vh - #{$header-height});
+  height: calc(100vh - #{$header-height});
+  overflow: hidden;
   padding: var(--sky-page-padding);
   background: #f6f7f9;
 }

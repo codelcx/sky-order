@@ -7,6 +7,8 @@ import MealsPage from '@/pages/meals'
 import CategoriesPage from '@/pages/categories'
 import TablesPage from '@/pages/tables'
 import EmployeesPage from '@/pages/employees'
+import DictPage from '@/pages/dict'
+import DictDataPage from '@/pages/dict/data'
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,13 @@ const router = createBrowserRouter([
       {
         path: 'employees',
         element: <EmployeesPage />,
+      },
+      {
+        path: 'dict',
+        children: [
+          { index: true, element: <DictPage /> },
+          { path: ':id', element: <DictDataPage /> },
+        ],
       },
     ],
   },
