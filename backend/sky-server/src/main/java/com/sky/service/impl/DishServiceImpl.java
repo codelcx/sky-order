@@ -9,13 +9,12 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
-import com.sky.entity.DishFlavor;
 import com.sky.exception.BusinessException;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.*;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
-//import com.sky.utils.AliOssUtil;
+import com.sky.utils.LocalStorageUtil;
 import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +36,10 @@ public class DishServiceImpl implements DishService {
     private CategoryMapper categoryMapper;
 
     @Autowired
-    private DishFlavorMapper dishFlavorMapper;
-
-    @Autowired
     private SetMealDishMapper setMealDishMapper;
 
-//    @Autowired
-//    private AliOssUtil aliOssUtil;
+    @Autowired
+    private LocalStorageUtil localStorageUtil;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -84,20 +80,16 @@ public class DishServiceImpl implements DishService {
 
         // 插入新菜品，数据库ID会回填到当前对象
         dish = new Dish();
-        BeanUtils.copyProperties(dishDTO, dish);
+        BeanUtils.copyProperties(dishDTO, dish, "flavors");
+        // 将口味列表序列化为 JSON 存入菜品字段
+        if (!CollectionUtils.isEmpty(dishDTO.getFlavors())) {
+            dish.setFlavors(JSONObject.toJSONString(dishDTO.getFlavors()));
+        }
         int affectRow = dishMapper.saveDish(dish);
 
-        // 插入口味表，可能有多种（甜度、辣度等）
-        int affectRows = 0;
-        List<DishFlavor> dishFlavors = dishDTO.getFlavors();
-        if (!CollectionUtils.isEmpty(dishFlavors)) {
-            Long dishID = dish.getId();
-            dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dishID));
-            affectRows = dishFlavorMapper.saveBatch(dishFlavors);
-        }
         deleteAllDishCache();
 
-        return affectRow > 0 && affectRows >= 0;
+        return affectRow > 0;
     }
 
     @Override
@@ -120,12 +112,9 @@ public class DishServiceImpl implements DishService {
         // 查找被删除菜品的图片地址
         List<String> images = dishMapper.getDishImagesByIds(ids);
 
-        // 删除菜品对应的口味数据
-        affectRows *= dishFlavorMapper.deleteByDishIds(ids);
         deleteAllDishCache();
 
-        // 删除阿里云oss对应文件
-//        aliOssUtil.deleteFileBatch(images);
+        localStorageUtil.deleteFileBatch(images);
 
         return affectRows >= 0;
     }
@@ -154,24 +143,17 @@ public class DishServiceImpl implements DishService {
             }
         }
 
-//        if (!dish.getImage().equals(dishDTO.getImage())) {
-//            // 图片发生改变需要修改阿里云图片
-//            aliOssUtil.deleteFile(dish.getImage());
-//        }
-
-
-        BeanUtils.copyProperties(dishDTO, dish);
-        int affectRow = dishMapper.updateDish(dish);
-
-        // 更新口味数据
-        List<DishFlavor> dishFlavors = dishDTO.getFlavors();
-        // 先删除原有的数据，然后再插入
-        dishFlavorMapper.deleteByDishIds(Collections.singletonList(dish.getId()));
-
-        if (!CollectionUtils.isEmpty(dishFlavors)) {
-            dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dishDTO.getId()));
-            dishFlavorMapper.saveBatch(dishFlavors);
+        if (dish.getImage() != null && !dish.getImage().equals(dishDTO.getImage())) {
+            localStorageUtil.deleteFile(dish.getImage());
         }
+
+
+        BeanUtils.copyProperties(dishDTO, dish, "flavors");
+        // 将口味列表序列化为 JSON 存入菜品字段
+        if (!CollectionUtils.isEmpty(dishDTO.getFlavors())) {
+            dish.setFlavors(JSONObject.toJSONString(dishDTO.getFlavors()));
+        }
+        int affectRow = dishMapper.updateDish(dish);
 
         deleteAllDishCache();
         return affectRow > 0;

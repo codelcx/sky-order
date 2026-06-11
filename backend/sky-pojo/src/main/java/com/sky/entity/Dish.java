@@ -64,4 +64,7 @@ public class Dish implements Serializable {
 
     @Schema(description = "修改人")
     private Long updateUser;
+
+    @Schema(description = "口味JSON")
+    private String flavors;
 }

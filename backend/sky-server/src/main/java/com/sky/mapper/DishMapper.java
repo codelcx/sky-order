@@ -27,8 +27,8 @@ public interface DishMapper {
     Dish getDishByDishName(String dishName);
 
     @AutoSet(OperationType.INSERT)
-    @Insert("insert into dish (name, category_id, price, image, description, create_time, update_time, create_user, update_user) " +
-            "values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
+    @Insert("insert into dish (name, category_id, price, image, description, flavors, create_time, update_time, create_user, update_user) " +
+            "values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{flavors}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int saveDish(Dish dish);
 
@@ -38,7 +38,7 @@ public interface DishMapper {
 
     DishVO getDishVOById(Long id);
 
-    @Select("select * from dish where id = #{id} and status = 1")
+    @Select("select * from dish where id = #{id}")
     Dish getDishById(Long id);
 
     @AutoSet(OperationType.UPDATE)

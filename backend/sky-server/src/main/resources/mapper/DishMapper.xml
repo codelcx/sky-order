@@ -5,10 +5,7 @@
     <resultMap id="DishVOMap" type="com.sky.vo.DishVO" autoMapping="true">
         <id column="id" property="id"/>
         <result column="category_name" property="categoryName"/>
-        <collection property="flavors" ofType="com.sky.entity.DishFlavor" autoMapping="true">
-            <id column="dish_flavor_id" property="id"/>
-            <result column="dish_flavor_name" property="name"/>
-        </collection>
+        <result column="flavors" property="flavors" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getDishVoList" resultMap="DishVOMap">
@@ -20,14 +17,10 @@
                d.description,
                d.status,
                d.update_time,
-               c.name as category_name,
-               df.id as dish_flavor_id,
-               df.dish_id,
-               df.name as dish_flavor_name,
-               df.value
+               d.flavors,
+               c.name as category_name
         from dish d
                  join category c on d.category_id = c.id
-                 left join dish_flavor df on d.id = df.dish_id
         <where>
             <if test="name != null and name != ''">
                 and d.name like concat('%', #{name}, '%')
@@ -71,14 +64,10 @@
                d.description,
                d.status,
                d.update_time,
-               c.name as category_name,
-               df.id as dish_flavor_id,
-               df.dish_id,
-               df.name as dish_flavor_name,
-               df.value
+               d.flavors,
+               c.name as category_name
         from dish d
                  join category c on d.category_id = c.id
-                 left join dish_flavor df on d.id = df.dish_id
         where d.id = #{id}
     </select>
 
@@ -94,6 +83,7 @@
             <if test="image != null">image = #{image},</if>
             <if test="description != null">description = #{description},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="flavors != null">flavors = #{flavors},</if>
         </set>
         where id = #{id}
     </update>
@@ -116,14 +106,10 @@
                d.description,
                d.status,
                d.update_time,
-               c.name as category_name,
-               df.id as dish_flavor_id,
-               df.dish_id,
-               df.name as dish_flavor_name,
-               df.value
+               d.flavors,
+               c.name as category_name
         from dish d
                  join category c on d.category_id = c.id
-                 left join dish_flavor df on d.id = df.dish_id
         where d.category_id = #{categoryId} and d.status = 1
         order by d.create_time
     </select>

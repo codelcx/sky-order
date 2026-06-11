@@ -58,7 +58,7 @@ backend/
 │       │   ├── Employee.java                    # 员工
 │       │   ├── Category.java                    # 分类
 │       │   ├── Dish.java                        # 菜品
-│       │   ├── DishFlavor.java                  # 菜品口味
+│       │   ├── DishFlavor.java                  # 菜品口味（JSON 内嵌于 dish）
 │       │   ├── Setmeal.java                     # 套餐
 │       │   ├── SetmealDish.java                 # 套餐-菜品关联
 │       │   ├── User.java                        # 微信用户
@@ -141,7 +141,7 @@ backend/
         │   │       ├── EmployeeMapper.java
         │   │       ├── CategoryMapper.java
         │   │       ├── DishMapper.java
-        │   │       ├── DishFlavorMapper.java
+        │   │       ├── DishFlavorHandler.java           # 菜品口味 JSON 类型处理器
         │   │       ├── SetmealMapper.java
         │   │       ├── SetmealDishMapper.java
         │   │       ├── ShoppingCartMapper.java
@@ -165,7 +165,7 @@ backend/
 |------|--------|-----------|---------|------|
 | 员工管理 | `employee` | admin.EmployeeController | EmployeeService | 登录、CRUD、启用/禁用 |
 | 分类管理 | `category` | admin.CategoryController | CategoryService | CRUD、启用/禁用（type 区分菜品/套餐） |
-| 菜品管理 | `dish`, `dish_flavor` | admin.DishController | DishService | CRUD、口味管理、起售/停售 |
+| 菜品管理 | `dish` | admin.DishController | DishService | CRUD、口味管理、起售/停售 |
 | 套餐管理 | `setmeal`, `setmeal_dish` | admin.SetmealController | SetmealService | CRUD、关联菜品、起售/停售 |
 | 订单管理 | `orders`, `order_detail` | admin.OrderController | OrderService | 查看、接单、派送、完成、取消、拒单 |
 | 通用接口 | — | admin.CommonController | — | 文件上传 |
@@ -190,7 +190,7 @@ employee        ── 员工
 user            ── 微信用户
 category        ── 分类（type=1 菜品分类 / type=2 套餐分类）
 dish            ── 菜品（关联 category）
-dish_flavor     ── 菜品口味（关联 dish）
+dish.flavors    ── 菜品口味（JSON 字段）
 setmeal         ── 套餐（关联 category）
 setmeal_dish    ── 套餐-菜品关联（关联 setmeal + dish）
 shopping_cart   ── 购物车（关联 user + dish/setmeal）

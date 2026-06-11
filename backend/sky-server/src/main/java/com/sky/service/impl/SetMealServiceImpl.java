@@ -17,7 +17,7 @@ import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
-//import com.sky.utils.AliOssUtil;
+import com.sky.utils.LocalStorageUtil;
 import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
@@ -47,8 +47,8 @@ public class SetMealServiceImpl implements SetMealService {
     @Autowired
     private SetMealDishMapper setMealDishMapper;
 
-//    @Autowired
-//    private AliOssUtil aliOssUtil;
+    @Autowired
+    private LocalStorageUtil localStorageUtil;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -130,10 +130,9 @@ public class SetMealServiceImpl implements SetMealService {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
 
-//        if (!setmealDTO.getImage().equals(setmealVO.getImage())) {
-//            // 如果上传的图片路径不同，需要删除原来的oss图片
-//            aliOssUtil.deleteFile(setmealVO.getImage());
-//        }
+        if (setmealVO.getImage() != null && !setmealDTO.getImage().equals(setmealVO.getImage())) {
+            localStorageUtil.deleteFile(setmealVO.getImage());
+        }
 
         int affectRow = setMealMapper.updateSetMeal(setmeal);
 
@@ -174,7 +173,7 @@ public class SetMealServiceImpl implements SetMealService {
         if (!CollectionUtils.isEmpty(notSellingSetMealIds)) {
 
             List<String> images = setMealMapper.getSetMealImagesByIds(notSellingSetMealIds);
-//            aliOssUtil.deleteFileBatch(images);
+            localStorageUtil.deleteFileBatch(images);
             // 删除套餐
             affectRows += setMealMapper.deleteSetMealByIds(notSellingSetMealIds);
             // 删除套餐关联菜品
