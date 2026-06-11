@@ -43,4 +43,10 @@ public class EmployeeDTO implements Serializable {
     @NotBlank(message = "身份证号不能为空")
     private String idNumber;
 
+    @Schema(description = "职业")
+    private String job;
+
+    @Schema(description = "地址")
+    private String address;
+
 }

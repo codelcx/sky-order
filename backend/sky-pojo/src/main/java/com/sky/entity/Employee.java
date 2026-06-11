@@ -57,6 +57,12 @@ public class Employee implements Serializable {
     @Pattern(regexp = "^\\d{15}|\\d{18}$", message = "身份证号不合法")
     private String idNumber;
 
+    @Schema(description = "职业")
+    private String job;
+
+    @Schema(description = "地址")
+    private String address;
+
     @Schema(description = "状态（0:禁用 1:启用）", allowableValues = "0,1")
     @NotNull(message = "状态不能为空")
     private Integer status;

@@ -11,14 +11,14 @@ public class Result<T> {
 
     public static <T> Result<T> success() {
         Result<T> r = new Result<>();
-        r.code = 1;
+        r.code = 0;
         r.msg = "success";
         return r;
     }
 
     public static <T> Result<T> success(T data) {
         Result<T> r = new Result<>();
-        r.code = 1;
+        r.code = 0;
         r.msg = "success";
         r.data = data;
         return r;
@@ -26,7 +26,7 @@ public class Result<T> {
 
     public static <T> Result<T> error(String msg) {
         Result<T> r = new Result<>();
-        r.code = 0;
+        r.code = 1;
         r.msg = msg;
         return r;
     }

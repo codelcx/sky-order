@@ -128,4 +128,17 @@ public class EmployeeController {
         employeeService.updateEmployee(employeeDTO);
         return Result.success();
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除员工")
+    public Result<?> deleteEmployee(
+            @PathVariable
+            @Parameter(description = "员工ID", required = true)
+            @NotNull(message = "员工ID不能为空")
+            Long id
+    ) {
+        log.info("删除员工，id: {}", id);
+        employeeService.deleteEmployee(id);
+        return Result.success();
+    }
 }

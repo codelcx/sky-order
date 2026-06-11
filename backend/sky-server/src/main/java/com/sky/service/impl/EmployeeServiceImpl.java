@@ -117,4 +117,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
     }
 
+    @Override
+    public void deleteEmployee(Long id) {
+        getEmployeeById(id);
+        employeeMapper.deleteById(id);
+    }
+
 }

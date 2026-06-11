@@ -11,6 +11,8 @@
             <if test="phone != null">phone = #{phone},</if>
             <if test="sex != null">sex = #{sex},</if>
             <if test="idNumber != null">id_number = #{idNumber},</if>
+            <if test="job != null">job = #{job},</if>
+            <if test="address != null">address = #{address},</if>
             <if test="status != null">status = #{status},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="updateUser != null">update_user = #{updateUser},</if>
@@ -26,6 +28,8 @@
                phone,
                sex,
                id_number,
+               job,
+               address,
                status,
                create_time,
                update_time,
