@@ -6,6 +6,7 @@ import {
   DictStatus,
   getDictDataPage,
   getDictTypeById,
+  updateDictDataStatus,
   type DictData,
   type DictType,
 } from '@/api/dict'
@@ -112,6 +113,20 @@ export default function DictDataPage() {
     })
   }
 
+  async function handleToggleStatus(data: DictData) {
+    try {
+      const nextStatus =
+        data.status === DictStatus.Enabled ? DictStatus.Disabled : DictStatus.Enabled
+      await updateDictDataStatus(data.id, nextStatus)
+      messageApi.success(nextStatus === DictStatus.Enabled ? '字典数据已启用' : '字典数据已禁用')
+      if (dictType) {
+        void loadDictData(dictType.code, currentPage, pageSize)
+      }
+    } catch (error) {
+      messageApi.error(error instanceof Error ? error.message : '字典数据状态更新失败')
+    }
+  }
+
   const columns: ColumnsType<DictData> = [
     {
       title: '标签',
@@ -146,7 +161,7 @@ export default function DictDataPage() {
               ? 'dict-page__tag--enabled'
               : 'dict-page__tag--disabled'
           }`}
-          bordered={false}
+          variant="filled"
         >
           {statusLabels[value]}
         </Tag>
@@ -155,10 +170,32 @@ export default function DictDataPage() {
     {
       title: '操作',
       key: 'actions',
-      width: 160,
+      width: 240,
       fixed: 'right',
       render: (_, record) => (
         <Space size={8}>
+          <Popconfirm
+            cancelText="取消"
+            okButtonProps={{ danger: record.status === DictStatus.Enabled }}
+            okText={record.status === DictStatus.Enabled ? '确认禁用' : '确认启用'}
+            title={record.status === DictStatus.Enabled ? '确认禁用该字典数据？' : '确认启用该字典数据？'}
+            onConfirm={() => handleToggleStatus(record)}
+          >
+            <Button
+              aria-label={
+                record.status === DictStatus.Enabled ? `禁用${record.label}` : `启用${record.label}`
+              }
+              className="dict-page__icon-button"
+              icon={
+                <Icon
+                  icon={
+                    record.status === DictStatus.Enabled ? 'lucide:ban' : 'lucide:check-circle'
+                  }
+                />
+              }
+              type="text"
+            />
+          </Popconfirm>
           <Button
             aria-label={`编辑${record.label}`}
             className="dict-page__icon-button"
@@ -204,7 +241,7 @@ export default function DictDataPage() {
                         ? 'dict-page__tag--enabled'
                         : 'dict-page__tag--disabled'
                     }`}
-                    bordered={false}
+                    variant="filled"
                   >
                     {statusLabels[dictType.status]}
                   </Tag>

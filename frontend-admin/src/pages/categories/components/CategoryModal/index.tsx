@@ -30,6 +30,8 @@ export default function CategoryModal(props: CategoryModalProps) {
   useEffect(() => {
     if (!open) { return }
 
+    form.resetFields()
+
     if (mode === 'edit' && currentId !== null) {
       getCategoryById(currentId)
         .then((response) => {
@@ -44,8 +46,6 @@ export default function CategoryModal(props: CategoryModalProps) {
         .catch((error) => {
           messageApi.error(error instanceof Error ? error.message : '分类信息加载失败')
         })
-    } else {
-      form.resetFields()
     }
   }, [open, mode, currentId, form, messageApi])
 
@@ -86,7 +86,7 @@ export default function CategoryModal(props: CategoryModalProps) {
         centered
         className="categories-page__modal"
         closeIcon={<Icon icon="lucide:x" />}
-        destroyOnClose
+        destroyOnHidden
         footer={null}
         onCancel={handleCancel}
         open={open}
@@ -129,6 +129,22 @@ export default function CategoryModal(props: CategoryModalProps) {
             </Form.Item>
 
             <Form.Item
+              label="状态"
+              name="status"
+              initialValue={CategoryStatus.Enabled}
+              valuePropName="checked"
+              getValueFromEvent={(checked: boolean) =>
+                checked ? CategoryStatus.Enabled : CategoryStatus.Disabled
+              }
+              getValueProps={(value: CategoryStatus) => ({
+                checked: value === CategoryStatus.Enabled,
+              })}
+            >
+              <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            </Form.Item>
+
+            <Form.Item
+              className="categories-page__full-width"
               label="排序值"
               name="sort"
               rules={[
@@ -143,22 +159,7 @@ export default function CategoryModal(props: CategoryModalProps) {
                 value: value ?? '',
               })}
             >
-              <Input placeholder="请输入排序值" type="number" />
-            </Form.Item>
-
-            <Form.Item
-              label="状态"
-              name="status"
-              initialValue={CategoryStatus.Enabled}
-              valuePropName="checked"
-              getValueFromEvent={(checked: boolean) =>
-                checked ? CategoryStatus.Enabled : CategoryStatus.Disabled
-              }
-              getValueProps={(value: CategoryStatus) => ({
-                checked: value === CategoryStatus.Enabled,
-              })}
-            >
-              <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+              <Input className="categories-page__half-input" placeholder="请输入排序值" type="number" />
             </Form.Item>
           </Form>
         </div>

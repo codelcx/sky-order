@@ -5,6 +5,7 @@ import {
   CategoryType,
   deleteCategory,
   getCategoryPage,
+  updateCategoryStatus,
   type Category,
 } from '@/api/category'
 import { useTableScroll } from '@/hooks/useTableScroll'
@@ -89,6 +90,18 @@ export default function CategoriesPage() {
     })
   }
 
+  async function handleToggleStatus(category: Category) {
+    try {
+      const nextStatus =
+        category.status === CategoryStatus.Enabled ? CategoryStatus.Disabled : CategoryStatus.Enabled
+      await updateCategoryStatus(category.id, nextStatus)
+      messageApi.success(nextStatus === CategoryStatus.Enabled ? '分类已启用' : '分类已禁用')
+      void loadCategories(currentPage, pageSize)
+    } catch (error) {
+      messageApi.error(error instanceof Error ? error.message : '分类状态更新失败')
+    }
+  }
+
   const columns: ColumnsType<Category> = [
     {
       title: '分类名称',
@@ -110,7 +123,7 @@ export default function CategoriesPage() {
                 className={`categories-page__type-tag ${
                   isDish ? 'categories-page__type-tag--dish' : 'categories-page__type-tag--setmeal'
                 }`}
-                bordered={false}
+                variant="filled"
               >
                 {isDish ? '菜品' : '套餐'}
               </Tag>
@@ -140,7 +153,7 @@ export default function CategoriesPage() {
               ? 'categories-page__tag--enabled'
               : 'categories-page__tag--disabled'
           }`}
-          bordered={false}
+           variant="filled"
         >
           {statusLabels[value]}
         </Tag>
@@ -149,10 +162,32 @@ export default function CategoriesPage() {
     {
       title: '操作',
       key: 'actions',
-      width: 140,
+      width: 200,
       fixed: 'right',
       render: (_, record) => (
         <Space size={8}>
+          <Popconfirm
+            cancelText="取消"
+            okButtonProps={{ danger: record.status === CategoryStatus.Enabled }}
+            okText={record.status === CategoryStatus.Enabled ? '确认禁用' : '确认启用'}
+            title={record.status === CategoryStatus.Enabled ? '确认禁用该分类？' : '确认启用该分类？'}
+            onConfirm={() => handleToggleStatus(record)}
+          >
+            <Button
+              aria-label={
+                record.status === CategoryStatus.Enabled ? `禁用${record.name}` : `启用${record.name}`
+              }
+              className="categories-page__icon-button"
+              icon={
+                <Icon
+                  icon={
+                    record.status === CategoryStatus.Enabled ? 'lucide:ban' : 'lucide:check-circle'
+                  }
+                />
+              }
+              type="text"
+            />
+          </Popconfirm>
           <Button
             aria-label={`编辑${record.name}`}
             className="categories-page__icon-button"

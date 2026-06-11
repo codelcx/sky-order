@@ -31,8 +31,53 @@ const theme: ThemeConfig = {
       headerHeight: 72,
     },
     Table: {
+      headerBg: '#fafbfc',
       headerColor: '#595959',
+      headerBorderRadius: 0,
+      borderColor: '#F0F0F0',
       rowHoverBg: '#FAFAFA',
+      cellFontSize: 14,
+      cellPaddingBlock: 8,
+      cellPaddingInline: 8,
+    },
+    Button: {
+      primaryShadow: 'none',
+      textHoverBg: '#FFF2EC',
+    },
+    Modal: {
+      headerBg: '#FFFFFF',
+      titleColor: '#1F1F1F',
+      titleFontSize: 18,
+      contentBg: '#FFFFFF',
+    },
+    Form: {
+      labelColor: '#595959',
+      labelFontSize: 13,
+    },
+    Input: {
+      paddingInline: 14,
+      hoverBorderColor: '#FFD3BF',
+      activeBorderColor: '#FF6B2C',
+      activeShadow: '0 0 0 3px rgba(255, 102, 52, 0.12)',
+      inputFontSize: 13,
+    },
+    Select: {
+      selectorBg: '#FFFFFF',
+      hoverBorderColor: '#FFD3BF',
+      activeBorderColor: '#FF6B2C',
+      activeOutlineColor: 'rgba(255, 102, 52, 0.12)',
+      optionSelectedBg: '#FFF2EC',
+      optionSelectedColor: '#FF6B2C',
+      optionActiveBg: '#FFF2EC',
+    },
+    Radio: {
+      buttonBg: '#FFFFFF',
+      buttonColor: '#8C8C8C',
+      buttonCheckedBg: '#FFF2EC',
+    },
+    Tag: {
+      defaultBg: '#F5F5F5',
+      defaultColor: '#8C8C8C',
     },
   },
 }

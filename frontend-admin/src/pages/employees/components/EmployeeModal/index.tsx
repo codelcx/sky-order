@@ -44,6 +44,8 @@ export default function EmployeeModal(props: EmployeeModalProps) {
   useEffect(() => {
     if (!open) { return }
 
+    form.resetFields()
+
     if (mode === 'edit' && currentEmployeeId !== null) {
       getEmployeeById(currentEmployeeId)
         .then((response) => {
@@ -62,7 +64,6 @@ export default function EmployeeModal(props: EmployeeModalProps) {
           messageApi.error(error instanceof Error ? error.message : '员工信息加载失败')
         })
     } else {
-      form.resetFields()
       form.setFieldsValue({ sex: Sex.Male })
     }
   }, [open, mode, currentEmployeeId, form, messageApi])
@@ -117,7 +118,7 @@ export default function EmployeeModal(props: EmployeeModalProps) {
         centered
         className="employees-page__modal"
         closeIcon={<Icon icon="lucide:x" />}
-        destroyOnClose
+        destroyOnHidden
         footer={null}
         onCancel={handleCancel}
         open={open}

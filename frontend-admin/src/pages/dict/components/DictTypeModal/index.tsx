@@ -29,6 +29,8 @@ export default function DictTypeModal(props: DictTypeModalProps) {
   useEffect(() => {
     if (!open) { return }
 
+    form.resetFields()
+
     if (mode === 'edit' && currentId !== null) {
       getDictTypeById(currentId)
         .then((response) => {
@@ -44,8 +46,6 @@ export default function DictTypeModal(props: DictTypeModalProps) {
         .catch((error) => {
           messageApi.error(error instanceof Error ? error.message : '字典类型信息加载失败')
         })
-    } else {
-      form.resetFields()
     }
   }, [open, mode, currentId, form, messageApi])
 
@@ -86,7 +86,7 @@ export default function DictTypeModal(props: DictTypeModalProps) {
         centered
         className="dict-page__modal"
         closeIcon={<Icon icon="lucide:x" />}
-        destroyOnClose
+        destroyOnHidden
         footer={null}
         onCancel={handleCancel}
         open={open}
@@ -123,25 +123,7 @@ export default function DictTypeModal(props: DictTypeModalProps) {
               <Input autoComplete="off" placeholder="请输入字典编码" />
             </Form.Item>
 
-            <Form.Item
-              label="排序值"
-              name="sort"
-              rules={[
-                { required: true, message: '请输入排序值' },
-                { type: 'number', min: 0, message: '排序值必须大于等于 0' },
-              ]}
-              getValueFromEvent={(e: React.ChangeEvent<HTMLInputElement>) => {
-                const val = parseInt(e.target.value, 10)
-                return Number.isNaN(val) ? undefined : val
-              }}
-              getValueProps={(value: number | undefined) => ({
-                value: value ?? '',
-              })}
-            >
-              <Input placeholder="请输入排序值" type="number" />
-            </Form.Item>
-
-            <Form.Item label="描述" name="description">
+            <Form.Item className="dict-page__full-width" label="描述" name="description">
               <Input.TextArea
                 autoComplete="off"
                 placeholder="请输入描述（可选）"
@@ -162,6 +144,25 @@ export default function DictTypeModal(props: DictTypeModalProps) {
               })}
             >
               <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            </Form.Item>
+
+            <Form.Item
+              className="dict-page__full-width"
+              label="排序值"
+              name="sort"
+              rules={[
+                { required: true, message: '请输入排序值' },
+                { type: 'number', min: 0, message: '排序值必须大于等于 0' },
+              ]}
+              getValueFromEvent={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const val = parseInt(e.target.value, 10)
+                return Number.isNaN(val) ? undefined : val
+              }}
+              getValueProps={(value: number | undefined) => ({
+                value: value ?? '',
+              })}
+            >
+              <Input className="dict-page__half-input" placeholder="请输入排序值" type="number" />
             </Form.Item>
           </Form>
         </div>

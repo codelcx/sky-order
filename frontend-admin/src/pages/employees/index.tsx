@@ -181,7 +181,7 @@ export default function EmployeesPage() {
       render: (value: string) => {
         const label = value ? (occupationMap[value] || value) : '--'
         return (
-          <Tag className="employees-page__tag" bordered={false} color={getTagColor(value || '')}>
+          <Tag className="employees-page__tag" variant="filled" color={getTagColor(value || '')}>
             {label}
           </Tag>
         )
@@ -215,7 +215,7 @@ export default function EmployeesPage() {
       width: 120,
       align: 'center',
       render: (value: Sex) => (
-        <Tag className="employees-page__tag employees-page__tag--sex" bordered={false}>
+        <Tag className="employees-page__tag employees-page__tag--sex" variant="filled">
           {sexLabels[value]}
         </Tag>
       ),
@@ -240,7 +240,7 @@ export default function EmployeesPage() {
               ? 'employees-page__tag--enabled'
               : 'employees-page__tag--resigned'
           }`}
-          bordered={false}
+          variant="filled"
         >
           {value === EmployeeStatus.Enabled ? '在职' : '离职'}
         </Tag>
@@ -253,13 +253,6 @@ export default function EmployeesPage() {
       fixed: 'right',
       render: (_, record) => (
         <Space size={8}>
-          <Button
-            aria-label={`编辑${record.name}`}
-            className="employees-page__icon-button"
-            icon={<Icon icon="lucide:square-pen" />}
-            onClick={() => openEditModal(record.id)}
-            type="text"
-          />
           <Popconfirm
             cancelText="取消"
             okButtonProps={{ danger: true }}
@@ -287,6 +280,13 @@ export default function EmployeesPage() {
               type="text"
             />
           </Popconfirm>
+          <Button
+            aria-label={`编辑${record.name}`}
+            className="employees-page__icon-button"
+            icon={<Icon icon="lucide:square-pen" />}
+            onClick={() => openEditModal(record.id)}
+            type="text"
+          />
           <Button
             aria-label={`删除${record.name}`}
             className="employees-page__icon-button"
