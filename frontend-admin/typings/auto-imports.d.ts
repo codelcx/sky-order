@@ -9,6 +9,7 @@ declare global {
   const Activity: typeof import('react').Activity
   const Button: typeof import('antd').Button
   const ConfigProvider: typeof import('antd').ConfigProvider
+  const Dropdown: typeof import('antd').Dropdown
   const Form: typeof import('antd').Form
   const Fragment: typeof import('react').Fragment
   const Input: typeof import('antd').Input
