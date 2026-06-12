@@ -1,6 +1,21 @@
 CREATE DATABASE  IF NOT EXISTS `sky_order` ;
 USE `sky_order`;
 
+DROP TABLE IF EXISTS `dinner_table`;
+CREATE TABLE `dinner_table` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `table_number` int NOT NULL COMMENT '桌号',
+  `capacity` int NOT NULL DEFAULT '4' COMMENT '座位数',
+  `status` int NOT NULL DEFAULT '0' COMMENT '状态 0:空闲 1:使用中 2:已预订',
+  `qr_code_url` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8_bin DEFAULT NULL COMMENT '二维码图片URL',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `create_user` bigint DEFAULT NULL COMMENT '创建人',
+  `update_user` bigint DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_table_number` (`table_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='餐桌表';
+
 DROP TABLE IF EXISTS `address_book`;
 CREATE TABLE `address_book` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -237,8 +252,6 @@ CREATE TABLE `setmeal_dish` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `setmeal_id` bigint DEFAULT NULL COMMENT '套餐id',
   `dish_id` bigint DEFAULT NULL COMMENT '菜品id',
-  `name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '菜品名称 （冗余字段）',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '菜品单价（冗余字段）',
   `copies` int DEFAULT NULL COMMENT '菜品份数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='套餐菜品关系';

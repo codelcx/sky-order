@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DinnerTableMapper">
+
+    <update id="updateDinnerTable">
+        update dinner_table
+        <set>
+            update_user = #{updateUser},
+            update_time = #{updateTime},
+            <if test="tableNumber != null">table_number = #{tableNumber},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="qrCodeUrl != null">qr_code_url = #{qrCodeUrl}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getDinnerTableList" resultType="com.sky.vo.DinnerTableVO">
+        select id,
+               table_number,
+               capacity,
+               status,
+               qr_code_url,
+               create_time,
+               update_time,
+               create_user,
+               update_user
+        from dinner_table
+        <where>
+            <if test="tableNumber != null">
+                and table_number = #{tableNumber}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by table_number asc
+    </select>
+</mapper>
