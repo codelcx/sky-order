@@ -14,10 +14,10 @@
     </select>
 
     <insert id="saveSetmealDishBatch">
-        insert into setmeal_dish (setmeal_id, dish_id, name, price, copies)
+        insert into setmeal_dish (setmeal_id, dish_id, copies)
         values
             <foreach collection="setmealDishes" item="setMealDish" separator=",">
-                (#{setMealDish.setmealId}, #{setMealDish.dishId}, #{setMealDish.name}, #{setMealDish.price}, #{setMealDish.copies})
+                (#{setMealDish.setmealId}, #{setMealDish.dishId}, #{setMealDish.copies})
             </foreach>
     </insert>
 
