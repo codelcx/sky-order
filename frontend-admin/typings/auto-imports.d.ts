@@ -13,6 +13,7 @@ declare global {
   const Form: typeof import('antd').Form
   const Fragment: typeof import('react').Fragment
   const Input: typeof import('antd').Input
+  const InputNumber: typeof import('antd').InputNumber
   const Link: typeof import('react-router-dom').Link
   const Modal: typeof import('antd').Modal
   const NavLink: typeof import('react-router-dom').NavLink

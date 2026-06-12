@@ -61,6 +61,24 @@ interface GetUserReq { ... }
 interface GetUserResp { ... }
 ```
 
+# 命名规范
+
+文件夹命名除组件（`components/` 下的子功能组件）使用 PascalCase 外，其余均使用短横线分隔（kebab-case）。
+
+对比示例：
+
+```
+# ✅ 推荐
+src/api/dinner-table/
+src/pages/order-list/
+src/pages/tables/components/DinnerTableModal/   # 组件使用 PascalCase
+
+# ❌ 不推荐
+src/api/dinnerTable/
+src/pages/orderList/
+src/pages/tables/components/dinner-table-modal/
+```
+
 # 组件拆分
 
 组件按功能维度拆分。每个功能模块的入口为 `index.vue`（或 `index.tsx`），统一放置在模块根目录。`components/` 目录存放该模块的子功能组件（如弹窗、卡片等），子功能组件均以文件夹形式创建，入口文件统一为 `index.vue` 或 `index.tsx`。若模块需要仅自身使用的 hooks / stores，同样放在 `components/` 目录下（与子功能组件平级），hooks 和 stores 为文件平铺，无需为每个文件创建文件夹。
