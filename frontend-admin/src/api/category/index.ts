@@ -59,6 +59,8 @@ export interface Category {
 export interface CategoryPageParams {
   /** 分类名称（模糊查询） */
   name?: string
+  /** 分类类型 */
+  type?: CategoryType
   /** 页码 */
   page?: number
   /** 每页记录数 */

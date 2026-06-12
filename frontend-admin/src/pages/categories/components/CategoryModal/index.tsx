@@ -129,6 +129,7 @@ export default function CategoryModal(props: CategoryModalProps) {
             </Form.Item>
 
             <Form.Item
+              className="categories-page__full-width"
               label="状态"
               name="status"
               initialValue={CategoryStatus.Enabled}

@@ -24,39 +24,22 @@ function beforeUpload(file: File) {
 
 export default function UploadFileComponent(props: UploadFileProps) {
   const { value, onChange } = props
-  const [uploadingFile, setUploadingFile] = useState<UploadFile | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   const fileList: UploadFile[] = value
     ? [{ uid: '-1', name: 'image', status: 'done', url: value }]
-    : uploadingFile
-      ? [uploadingFile]
-      : []
-
-  const handleChange: UploadProps['onChange'] = (info) => {
-    const { file } = info
-    if (file.status === 'uploading') {
-      setUploadingFile(file as UploadFile)
-      return
-    }
-    if (file.status === 'done') {
-      const url = file.response?.data
-      setUploadingFile({ uid: '-1', name: 'image', status: 'done', url: url || '' })
-      if (url) {
-        onChange?.(url)
-      }
-    }
-    if (file.status === 'error') {
-      setUploadingFile(null)
-    }
-  }
+    : []
 
   const customRequest: UploadProps['customRequest'] = async (options) => {
-    const { file, onSuccess, onError } = options
+    const { file, onError } = options
     try {
+      setUploading(true)
       const response = await uploadFile(file as File)
-      onSuccess?.(response, file)
+      onChange?.(response.data)
     } catch (error) {
       onError?.(error as Error)
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -71,11 +54,10 @@ export default function UploadFileComponent(props: UploadFileProps) {
       fileList={fileList}
       listType="picture-card"
       maxCount={1}
-      onChange={handleChange}
       onRemove={handleRemove}
       beforeUpload={beforeUpload}
     >
-      {fileList.length === 0 && (
+      {fileList.length === 0 && !uploading && (
         <div className="upload-file-placeholder">
           <Icon icon="lucide:plus" />
           <div className="upload-file-text">上传图片</div>

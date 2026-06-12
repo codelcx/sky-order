@@ -28,12 +28,13 @@ export default function CategoriesPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const { tableWrapRef, scrollY } = useTableScroll()
+  const [searchType, setSearchType] = useState<CategoryType | undefined>()
 
   const loadCategories = useCallback(async (page: number, size?: number) => {
     setLoading(true)
     try {
       const ps = size ?? pageSize
-      const response = await getCategoryPage({ page, pageSize: ps })
+      const response = await getCategoryPage({ page, pageSize: ps, type: searchType })
       setRecords(response.data.records)
       setTotal(response.data.total)
       setCurrentPage(response.data.pageNum || page)
@@ -42,14 +43,28 @@ export default function CategoriesPage() {
     } finally {
       setLoading(false)
     }
-  }, [messageApi, pageSize])
+  }, [messageApi, pageSize, searchType])
 
   const fetchedRef = useRef(false)
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
   useEffect(() => {
     if (fetchedRef.current) return
     fetchedRef.current = true
     void loadCategories(1)
   }, [loadCategories])
+
+  useEffect(() => {
+    if (fetchedRef.current) {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+      searchTimerRef.current = setTimeout(() => {
+        void loadCategories(1)
+      }, 300)
+    }
+    return () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    }
+  }, [searchType])
 
   function openCreateModal() {
     setModalMode('create')
@@ -213,6 +228,26 @@ export default function CategoriesPage() {
       <section className="categories-page">
         <div className="categories-page__card">
           <div className="categories-page__header">
+            <div className="categories-page__search">
+              <Select
+                allowClear
+                className="categories-page__search-select"
+                options={[
+                  { label: '菜品', value: CategoryType.Dish },
+                  { label: '套餐', value: CategoryType.Setmeal },
+                ]}
+                placeholder="类型"
+                value={searchType}
+                onChange={(value) => setSearchType(value)}
+              />
+              <Button
+                className="categories-page__reset-button"
+                icon={<Icon icon="lucide:rotate-ccw" />}
+                onClick={() => setSearchType(undefined)}
+              >
+                重置
+              </Button>
+            </div>
             <Button
               className="categories-page__create-button"
               icon={<Icon icon="lucide:plus" />}

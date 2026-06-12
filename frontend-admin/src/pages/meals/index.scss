@@ -1,6 +1,6 @@
 @use '@/styles/table-scroll';
 
-.categories-page {
+.setmeals-page {
   @extend %table-scroll-page;
   color: var(--sky-text-primary);
 
@@ -28,6 +28,20 @@
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+  }
+
+  &__search-input {
+    width: 200px;
+
+    .ant-input-prefix {
+      margin-right: 6px;
+      color: var(--sky-text-tertiary);
+
+      .iconify {
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 
   &__search-select {
@@ -70,35 +84,34 @@
 
   &__name-cell {
     display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__thumb {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: var(--sky-radius-xs);
+    overflow: hidden;
+
+    .ant-image {
+      width: 48px;
+      height: 48px;
+    }
+
+    .ant-image-img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+    }
+  }
+
+  &__name-info {
+    display: flex;
     flex-direction: column;
     gap: 4px;
-  }
-
-  &__name-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &__type-tag {
-    min-width: auto;
-    margin: 0;
-    padding: 0 8px;
-    border-radius: var(--sky-tag-radius);
-    font-size: var(--sky-font-size-small);
-    font-weight: var(--sky-font-weight-page-title);
-    line-height: 22px;
-    text-align: center;
-  }
-
-  &__type-tag--dish {
-    background: var(--sky-tag-processing-bg);
-    color: var(--sky-tag-processing-color);
-  }
-
-  &__type-tag--setmeal {
-    background: var(--sky-tag-success-bg);
-    color: var(--sky-tag-success-color);
+    min-width: 0;
   }
 
   &__name {
@@ -106,10 +119,18 @@
     font-weight: var(--sky-font-weight-page-title);
   }
 
-  &__name-counts {
+  &__description {
     color: var(--sky-text-tertiary);
     font-size: var(--sky-font-size-small);
     font-weight: var(--sky-font-weight-body);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__price {
+    color: var(--sky-color-primary);
+    font-weight: var(--sky-font-weight-page-title);
   }
 
   &__tag--enabled {
@@ -170,37 +191,85 @@
     }
   }
 
-  &__type-field {
-    grid-column: 1 / -1;
-  }
-
-  &__type-group {
-    display: flex;
-    width: 100%;
-
-    .ant-radio-button-wrapper {
-      flex: 1;
-      text-align: center;
-    }
-  }
-
   &__form {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     column-gap: 12px;
 
     .ant-form-item {
       margin: 0 0 4px;
       min-height: 90px;
     }
+
+    .ant-input-number {
+      width: 100%;
+    }
   }
 
-  &__full-width {
+  &__price-input {
+    width: 100%;
+
+    .ant-input-number-prefix {
+      margin-right: 4px;
+      color: var(--sky-text-tertiary);
+    }
+  }
+
+  &__dishes-section {
     grid-column: 1 / -1;
+    margin-top: 8px;
   }
 
-  &__half-input {
-    max-width: 50%;
+  &__dishes-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__dishes-title {
+    color: var(--sky-text-primary);
+    font-size: 13px;
+    font-weight: var(--sky-font-weight-page-title);
+  }
+
+  &__dish-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: var(--sky-bg-page);
+    border-radius: var(--sky-radius-md);
+
+    .ant-form-item {
+      min-height: auto;
+      margin: 0;
+    }
+  }
+
+  &__dish-remove {
+    margin-top: 26px;
+  }
+
+  &__add-dish {
+    width: 100%;
+    height: 40px;
+    border: 1px dashed var(--sky-border-color);
+    border-radius: var(--sky-radius-input);
+    color: var(--sky-text-tertiary);
+    font-size: 13px;
+
+    &:hover {
+      border-color: var(--sky-color-primary-border);
+      color: var(--sky-color-primary);
+    }
+
+    .iconify {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   &__modal-actions {
@@ -211,4 +280,3 @@
     border-top: 1px solid var(--sky-border-light);
   }
 }
-

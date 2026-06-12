@@ -36,7 +36,7 @@ export default function DishesPage() {
   const [categoryOptions, setCategoryOptions] = useState<{ label: string; value: number }[]>([])
 
   const { tableWrapRef, scrollY } = useTableScroll()
-  const searchTimerRef = useRef<ReturnType<typeof setTimeout>>()
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     getCategoryPage({ page: 1, pageSize: 999 })

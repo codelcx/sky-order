@@ -21,6 +21,7 @@ declare global {
   const Radio: typeof import('antd').Radio
   const Route: typeof import('react-router-dom').Route
   const Routes: typeof import('react-router-dom').Routes
+  const Select: typeof import('antd').Select
   const Space: typeof import('antd').Space
   const Spin: typeof import('antd').Spin
   const Suspense: typeof import('react').Suspense
